@@ -1,0 +1,61 @@
+[changelog]
+# changelog header
+header = """
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+"""
+
+body = """
+{% if version -%}
+    {% set section_name = version | trim_start_matches(pat="v") -%}
+    ## [{{ section_name }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else -%}
+    {% set section_name = "Unreleased" -%}
+    ## [{{ section_name }}]
+{% endif -%}
+
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {{ commit.message | upper_first }} (\
+            {% if commit.gitlab.pr_number %}!{{ commit.gitlab.pr_number }}{% endif -%}\
+            {% for footer in commit.footers %}\
+                {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}})){% endif %}\
+            {%- endfor -%}\
+        )
+    {%- endfor %}
+{% endfor %}
+<!-- End section {{ section_name }} -->
+"""
+
+# remove the leading and trailing whitespace from the templates
+trim = true
+
+[git]
+# parse the commits based on https://www.conventionalcommits.org
+conventional_commits = true
+
+# parsers that match first are prioritized
+commit_parsers = [
+    { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 5 --> Dependencies" },
+
+    { message = "^feat*", group = "<!-- 0 -->🚀 New features" },
+    { message = "^fix*", group = "<!-- 1 -->🐛 Bug fixes" },
+    { message = "^perf*", group = "<!-- 2 -->⚡ Performance" },
+    { message = "^chore*", group = "<!-- 3 -->⚙ Miscellaneous" },
+    { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
+
+    # Skip processing the commit if the commit footer contains "changelog: ignore".
+    { footer = "^changelog: ?ignore", skip = true },
+]
+
+# regex for matching git tags
+tag_pattern = "v[0-9].*"
+
+# regex for skipping tags
+skip_tags = "v*-rc*"
