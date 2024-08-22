@@ -95,6 +95,6 @@ build:container:
       /kaniko/executor
       --registry-mirror=mirror.gcr.io
       --context $CI_PROJECT_DIR
-      --dockerfile $CI_PROJECT_DIR/ci/Dockerfile
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
       $IMAGE_DESTINATION_ARGS
       --force
