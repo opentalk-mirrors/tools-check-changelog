@@ -20,4 +20,4 @@ changelog and that the changelog contains all changes that are part of the Merge
 
 ## Usage
 
-Include this script in your CI
+Include this script in your CI.

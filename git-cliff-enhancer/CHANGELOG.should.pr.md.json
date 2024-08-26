@@ -1,0 +1,449 @@
+[
+    {
+        "commits": [
+            {
+                "id": "06b70c24ce68fd2c19653d116680ad75bb246ba3",
+                "message": "synchronize changelog from v0.18.0",
+                "group": "<!-- 3 -->⚙ Miscellaneous",
+                "scope": "docs",
+                "links": [],
+                "author": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723100648
+                },
+                "committer": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723103981
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(docs): synchronize changelog from v0.18.0",
+                    "pr_number": 1091,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "aa3fe8b169cc68ec062d305f60ea67f3b10d2ea2",
+                "message": "update rust crate serde to v1.0.205",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723176991
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723176991
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): update rust crate serde to v1.0.205",
+                    "pr_number": 1088,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "0e29968bac91c0b7551f1f551c458c5bc6680d3b",
+                "message": "update rust crate clap to v4.5.14",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723189567
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723189567
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): update rust crate clap to v4.5.14",
+                    "pr_number": 1092,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "fe922dde8a1cb5d679972d2a9a42146e34bfde22",
+                "message": "update rust crate serde_json to v1.0.124",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723411009
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723411009
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): update rust crate serde_json to v1.0.124",
+                    "pr_number": 1102,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "9fd8e76706f1ca1f5f12c2b01f85c992c07bfb81",
+                "message": "update rust crate serde to v1.0.207",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723493845
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723493845
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): update rust crate serde to v1.0.207",
+                    "pr_number": 1101,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "4ab76811c9467daf2f6813010b3c9a4b0d5cd04c",
+                "message": "lock file maintenance",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723186961
+                },
+                "committer": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723532062
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): lock file maintenance",
+                    "pr_number": 1093,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "99dce253b08e6a86a65411c952f3c4fdb57d81ac",
+                "message": "update rust crate tokio-cron-scheduler to 0.11",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723533989
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1723533989
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "fix(deps): update rust crate tokio-cron-scheduler to 0.11",
+                    "pr_number": 1095,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "2194510a371b2929894836ea8b2b9e2613f5404d",
+                "message": "update rust crate derive_more to v1",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723174291
+                },
+                "committer": {
+                    "name": "Wolfgang Silbermayr",
+                    "email": "w.silbermayr@opentalk.eu",
+                    "timestamp": 1723562053
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "fix(deps): update rust crate derive_more to v1",
+                    "pr_number": 1087,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "4efaf3a820b745a87003cb9b2fd99bb3a91360ad",
+                "message": "lock file maintenance",
+                "group": "<!-- 5 --> Dependencies",
+                "scope": "deps",
+                "links": [],
+                "author": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1724026507
+                },
+                "committer": {
+                    "name": "Renovate_Bot",
+                    "email": "group_5_bot_cf64c3f4404c3135002961480d643a95@noreply.git.opentalk.dev",
+                    "timestamp": 1724026507
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "chore(deps): lock file maintenance",
+                    "pr_number": 1112,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "3e86dd0f8471d9be95fea6007b5406589a8a5f2f",
+                "message": "update markdown linter to allow code blocks",
+                "group": "<!-- 1 -->🐛 Bug fixes",
+                "scope": null,
+                "links": [],
+                "author": {
+                    "name": "Marvin Ankert",
+                    "email": "m.ankert@heinlein-video.de",
+                    "timestamp": 1724081251
+                },
+                "committer": {
+                    "name": "Marvin Ankert",
+                    "email": "m.ankert@heinlein-video.de",
+                    "timestamp": 1724147894
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "fix: update markdown linter to allow code blocks",
+                    "pr_number": 1113,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "52018e606cb353b25a0d38a3aec4a052855389c6",
+                "message": "prevent recorder start in breakout rooms",
+                "group": "<!-- 1 -->🐛 Bug fixes",
+                "scope": null,
+                "links": [],
+                "author": {
+                    "name": "Maximilian Fuß",
+                    "email": "m.fuss@opentalk.eu",
+                    "timestamp": 1723211995
+                },
+                "committer": {
+                    "name": "Maximilian Fuß",
+                    "email": "m.fuss@opentalk.eu",
+                    "timestamp": 1724226007
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "fix: prevent recorder start in breakout rooms",
+                    "pr_number": 1094,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "80fa11c3458ced5d540b8f6eb54db34506c6d894",
+                "message": "add part-number for chunk upload",
+                "group": "<!-- 0 -->🚀 New features",
+                "scope": null,
+                "links": [],
+                "author": {
+                    "name": "Daniél Kerkmann",
+                    "email": "d.kerkmann@opentalk.eu",
+                    "timestamp": 1723021274
+                },
+                "committer": {
+                    "name": "Daniél Kerkmann",
+                    "email": "d.kerkmann@opentalk.eu",
+                    "timestamp": 1724251654
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "feat: add part-number for chunk upload",
+                    "pr_number": 1086,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "962ecf6713a2e9de1e21eb2e0064d540501a12d5",
+                "message": "how to setup the recorder client in keycloak",
+                "group": "<!-- 4 -->📚 Documentation",
+                "scope": "recorder",
+                "links": [],
+                "author": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1723627200
+                },
+                "committer": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1724398324
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "docs(recorder): how to setup the recorder client in keycloak",
+                    "pr_number": 1105,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "f96e5bbdd27f91aef52d85c16657a2dce5573a00",
+                "message": "reword screenshot disclaimer",
+                "group": "<!-- 4 -->📚 Documentation",
+                "scope": "keycloak",
+                "links": [],
+                "author": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1724135855
+                },
+                "committer": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1724398328
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": "docs(recorder): how to setup the recorder client in keycloak",
+                    "pr_number": 1105,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            },
+            {
+                "id": "3b10a197b83f5a5b68f48ef4311bc2140456427d",
+                "message": "generate attendance report",
+                "group": "<!-- 0 -->🚀 New features",
+                "scope": null,
+                "links": [],
+                "author": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1722346063
+                },
+                "committer": {
+                    "name": "Albrecht Weiche",
+                    "email": "a.weiche@opentalk.eu",
+                    "timestamp": 1724416742
+                },
+                "conventional": false,
+                "merge_commit": false,
+                "extra": null,
+                "gitlab": {
+                    "username": null,
+                    "pr_title": null,
+                    "pr_number": null,
+                    "pr_labels": [],
+                    "is_first_time": false
+                }
+            }
+        ],
+        "bitbucket": {
+            "contributors": []
+        },
+        "commit_id": null,
+        "gitea": {
+            "contributors": []
+        },
+        "github": {
+            "contributors": []
+        },
+        "gitlab": {
+            "contributors": []
+        },
+        "message": null,
+        "previous": {
+            "bitbucket": {
+                "contributors": []
+            },
+            "commit_id": "c49aa07bea8ec70046956f5a27e7e5ef438458a9",
+            "commits": [],
+            "gitea": {
+                "contributors": []
+            },
+            "github": {
+                "contributors": []
+            },
+            "gitlab": {
+                "contributors": []
+            },
+            "message": null,
+            "previous": null,
+            "repository": null,
+            "timestamp": 1723102779,
+            "version": "v0.18.0"
+        },
+        "repository": "/home/weich/Projects/OpenTalk/Backend/Services/controller",
+        "timestamp": 0,
+        "version": null
+    }
+]
