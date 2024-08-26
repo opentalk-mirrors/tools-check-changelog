@@ -9,12 +9,11 @@ clap = { version = "4.5.16", features = ["derive", "env"] }
 clap-verbosity-flag = "2.2.1"
 env_logger = "0.11.5"
 futures = "0.3.30"
-git-cliff-core = { version = "2.5.0", features = ["gitlab"] }
 log = "0.4.22"
-reqwest = { version = "0.12.7", features = ["rustls-tls-native-roots"] }
+reqwest = { version = "0.12.7", features = ["json", "rustls-tls-native-roots"] }
 secrecy = "0.8.0"
-serde = "1.0.209"
+serde = { version = "1.0.209", features = ["derive"] }
 serde_json = "1.0.127"
-tokio = "1.39.3"
+tokio = { version = "1.39.3", features = ["macros", "rt-multi-thread"] }
 url = "2.5.2"
 urlencoding = "2.1.3"

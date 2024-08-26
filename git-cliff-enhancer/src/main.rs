@@ -6,9 +6,8 @@ use std::io::{self, Read as _};
 use anyhow::{bail, Context, Ok, Result};
 use clap::Parser;
 use futures::{stream, StreamExt as _, TryStreamExt};
-use git_cliff_core::commit::Commit;
-use gitlab::{MergeRequest, MergeRequestState};
-use input::CliffContext;
+use gitlab::MergeRequest;
+use input::{CliffCommit, CliffContext};
 use reqwest::{header::HeaderMap, Client, StatusCode};
 use secrecy::{ExposeSecret as _, Secret};
 use url::Url;
@@ -46,11 +45,11 @@ fn read_from_stdin() -> Result<Vec<u8>> {
     Ok(buffer)
 }
 
-async fn add_mr_to_commit<'a>(
+async fn add_mr_to_commit(
     client: Client,
     gitlab_url: &Url,
     gitlab_repo: &str,
-    commit: &mut Commit<'a>,
+    commit: &mut CliffCommit,
 ) -> Result<()> {
     let url = format!(
         "{}/projects/{}/repository/commits/{}/merge_requests",
@@ -71,7 +70,7 @@ async fn add_mr_to_commit<'a>(
                 .unwrap_or("<failed to receive GitLab response>")
         )
     }
-    let merge_requests: Vec<MergeRequest> = res
+    let mut merge_requests: Vec<MergeRequest> = res
         .json()
         .await
         .with_context(|| format!("Failed to process GitLab response for commit {}", commit.id))?;
@@ -81,14 +80,11 @@ async fn add_mr_to_commit<'a>(
         commit.id
     );
 
-    let Some(relevant_mr) = merge_requests
-        .iter()
-        .find(|mr| mr.state == MergeRequestState::Merged)
-    else {
-        log::warn!(
-            "Found merge requests that for commit but non was merged (sha: {})",
-            commit.id
-        );
+    merge_requests.sort_by(|a, b| a.iid.cmp(&b.iid));
+
+    // We take the newest/latest merge request
+    let Some(relevant_mr) = merge_requests.last() else {
+        log::warn!("No merge request found for commit {}", commit.id);
         return Ok(());
     };
 
@@ -99,12 +95,12 @@ async fn add_mr_to_commit<'a>(
     Ok(())
 }
 
-async fn add_merge_request_information<'a>(
+async fn add_merge_request_information(
     gitlab_token: &Secret<String>,
     gitlab_url: &Url,
     gitlab_repo: &str,
     concurrency: usize,
-    context: &mut CliffContext<'a>,
+    context: &mut CliffContext,
 ) -> Result<()> {
     let commit_iter = context
         .iter_mut()
