@@ -23,10 +23,10 @@ body = """
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
         - {{ commit.message | upper_first }} (\
-            {% if commit.gitlab.pr_number %}!{{ commit.gitlab.pr_number }}{% endif -%}\
-            {% for footer in commit.footers %}\
+            {% if commit.gitlab.pr_number %}[!{{ commit.gitlab.pr_number }}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/merge_requests/{{ commit.gitlab.pr_number }}){% endif -%}\
+            {% if commit.footers %}{% for footer in commit.footers %}\
                 {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}})){% endif %}\
-            {%- endfor -%}\
+            {%- endfor %}{% endif -%}\
         )
     {%- endfor %}
 {% endfor %}

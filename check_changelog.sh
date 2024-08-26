@@ -29,7 +29,7 @@ temp_file_A=$(mktemp)
 head -c "$length_B" "$file_A" > "$temp_file_A"
 
 # Compare the content
-if diff "$temp_file_A" "$file_B"; then
+if diff "$temp_file_A" "$file_B" > /dev/null; then
     echo "File $file_A starts with the content of file $file_B."
     rm "$temp_file_A"
     exit 0
