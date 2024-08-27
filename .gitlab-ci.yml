@@ -17,6 +17,52 @@ stages:
   - lint
   - build
 
+lint:fmt:
+  stage: lint
+  <<: *default_job_condition
+  script:
+    - cd git-cliff-enhancer
+    - cargo +nightly fmt -- --check
+
+lint:clippy:
+  stage: lint
+  <<: *default_job_condition
+  script:
+    - cd git-cliff-enhancer
+    - cargo clippy --workspace --all-features --tests -- --deny warnings
+
+lint:doc:
+  stage: lint
+  <<: *default_job_condition
+  variables:
+    RUSTDOCFLAGS: -Dwarnings
+  script:
+    - cd git-cliff-enhancer
+    - cargo doc --workspace --no-deps
+
+lint:dependency_check:
+  stage: lint
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      changes:
+        - Cargo.lock
+        - deny.toml
+    - if: $CI_PIPELINE_SOURCE == 'schedule'
+  script:
+    - cd git-cliff-enhancer
+    - cargo-deny --workspace check --deny unmatched-skip --deny license-not-encountered
+
+lint:unnecessary_dependencies:
+  stage: lint
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  before_script: if ! cargo machete --version; then cargo install cargo-machete; fi
+  script:
+    - cd git-cliff-enhancer
+    - cargo machete --with-metadata
+
 lint:commit:
   image: node:lts-alpine
   stage: lint
@@ -34,6 +80,11 @@ lint:yaml:
   before_script:
     - apt-get update && apt-get install -y yamllint
   script: yamllint .
+
+lint:toml:
+  stage: lint
+  <<: *default_job_condition
+  script: taplo fmt --check
 
 lint:markdown:
   stage: lint

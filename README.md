@@ -8,7 +8,7 @@ This tool first creates the latest changelog section and stores the output in a
 temporary file. Afterwards a script verifies that the actual changelog starts
 with the computed parts.
 
-## Why would we use this?
+## Advantages of using Check-Changelog
 
 This tool helps to write commit messages that produce a readable changelog.
 Without this tool, the changelog is updated only when the next release is created.
