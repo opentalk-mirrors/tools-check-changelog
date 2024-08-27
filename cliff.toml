@@ -42,16 +42,16 @@ conventional_commits = true
 
 # parsers that match first are prioritized
 commit_parsers = [
-    { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 5 --> Dependencies" },
+  { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 5 --> Dependencies" },
 
-    { message = "^feat*", group = "<!-- 0 -->🚀 New features" },
-    { message = "^fix*", group = "<!-- 1 -->🐛 Bug fixes" },
-    { message = "^perf*", group = "<!-- 2 -->⚡ Performance" },
-    { message = "^chore*", group = "<!-- 3 -->⚙ Miscellaneous" },
-    { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
+  { message = "^chore*", group = "<!-- 3 -->⚙ Miscellaneous" },
+  { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
+  { message = "^feat*", group = "<!-- 0 -->🚀 New features" },
+  { message = "^fix*", group = "<!-- 1 -->🐛 Bug fixes" },
+  { message = "^perf*", group = "<!-- 2 -->⚡ Performance" },
 
-    # Skip processing the commit if the commit footer contains "changelog: ignore".
-    { footer = "^changelog: ?ignore", skip = true },
+  # Skip processing the commit if the commit footer contains "changelog: ignore".
+  { footer = "^changelog: ?ignore", skip = true },
 ]
 
 # regex for matching git tags

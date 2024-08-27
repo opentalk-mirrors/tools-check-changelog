@@ -4,7 +4,7 @@
 //! most fields removed. The field `values` was added to catch additional, unknown
 //! or unused fields.
 //!
-//! Source: https://github.com/orhun/git-cliff/
+//! Source: `https://github.com/orhun/git-cliff/`
 
 use std::collections::BTreeMap;
 

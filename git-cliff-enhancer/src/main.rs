@@ -102,10 +102,7 @@ async fn add_merge_request_information(
     concurrency: usize,
     context: &mut CliffContext,
 ) -> Result<()> {
-    let commit_iter = context
-        .iter_mut()
-        .map(|context| &mut context.commits)
-        .flatten();
+    let commit_iter = context.iter_mut().flat_map(|context| &mut context.commits);
 
     let mut header = HeaderMap::new();
     header.insert(
