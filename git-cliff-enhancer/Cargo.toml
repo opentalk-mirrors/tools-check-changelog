@@ -1,7 +1,7 @@
 [package]
+edition = "2021"
 name = "git-cliff-enhancer"
 version = "0.1.0"
-edition = "2021"
 
 [dependencies]
 anyhow = "1.0.86"
@@ -10,7 +10,12 @@ clap-verbosity-flag = "2.2.1"
 env_logger = "0.11.5"
 futures = "0.3.30"
 log = "0.4.22"
-reqwest = { version = "0.12.7", features = ["json", "rustls-tls-native-roots"] }
+reqwest = { version = "0.12.7", default-features = false, features = [
+  "charset",
+  "http2",
+  "json",
+  "rustls-tls-native-roots",
+] }
 secrecy = "0.8.0"
 serde = { version = "1.0.209", features = ["derive"] }
 serde_json = "1.0.127"

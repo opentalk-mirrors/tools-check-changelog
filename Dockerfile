@@ -10,15 +10,17 @@ COPY git-cliff-enhancer/src src
 
 RUN RUSTFLAGS=-Ctarget-feature=-crt-static cargo auditable build --release
 
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 WORKDIR /app
-COPY cliff.toml /app/cliff.toml
-COPY --from=cliff /usr/local/bin/git-cliff /usr/local/bin/git-cliff
 
+COPY cliff.toml /usr/local/etc/cliff.toml
+ENV GIT_CLIFF_CONFIG=/usr/local/etc/cliff.toml
+
+COPY --from=cliff /usr/local/bin/git-cliff /usr/local/bin/git-cliff
 COPY --from=builder /git-cliff-enhancer/target/release/git-cliff-enhancer /usr/local/bin/git-cliff-enhancer
 
 COPY check_changelog.sh /usr/local/bin/check_changelog.sh
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["bash", "/usr/local/bin/entrypoint.sh"]
