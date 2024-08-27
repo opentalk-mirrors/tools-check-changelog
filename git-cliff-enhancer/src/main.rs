@@ -70,7 +70,7 @@ async fn add_mr_to_commit(
                 .unwrap_or("<failed to receive GitLab response>")
         )
     }
-    let merge_requests: Vec<MergeRequest> = res
+    let mut merge_requests: Vec<MergeRequest> = res
         .json()
         .await
         .with_context(|| format!("Failed to process GitLab response for commit {}", commit.id))?;
@@ -81,10 +81,7 @@ async fn add_mr_to_commit(
     );
 
     // Filter all closed, locked MRs and sort by IID so that we can take the MR with the highest number
-    let mut merge_requests: Vec<MergeRequest> = merge_requests
-        .into_iter()
-        .filter(|mr| mr.state.is_closed() || mr.state.is_locked())
-        .collect();
+    merge_requests.retain(|mr| !mr.state.is_closed() && !mr.state.is_locked());
     merge_requests.sort_by(|a, b| a.iid.cmp(&b.iid));
 
     // We take the newest/latest merge request
