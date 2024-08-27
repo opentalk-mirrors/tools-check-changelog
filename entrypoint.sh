@@ -10,4 +10,4 @@ git-cliff -c $GIT_CLIFF_CONFIG --unreleased --context \
     | git-cliff-enhancer -vvvv \
     | git-cliff -c $GIT_CLIFF_CONFIG --from-context - -o CHANGELOG.should.md
 
-$SCRIPT_DIR/check_changelog.sh CHANGELOG.should.md CHANGELOG.md
+$SCRIPT_DIR/check_changelog.sh CHANGELOG.md CHANGELOG.should.md
