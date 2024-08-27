@@ -16,7 +16,6 @@ WORKDIR /app
 
 COPY cliff.toml /usr/local/etc/cliff.toml
 ENV GIT_CLIFF_CONFIG=/usr/local/etc/cliff.toml
-ENV GITLAB_API_URL=https://git.opentalk.dev/api/v4
 
 COPY --from=cliff /usr/local/bin/git-cliff /usr/local/bin/git-cliff
 COPY --from=builder /git-cliff-enhancer/target/release/git-cliff-enhancer /usr/local/bin/git-cliff-enhancer
