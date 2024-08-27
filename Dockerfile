@@ -1,4 +1,4 @@
-FROM orhunp/git-cliff:2.5.0 AS cliff
+FROM orhunp/git-cliff:sha-c34aaa0 AS cliff
 
 FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.79.0-bookworm AS builder
 
