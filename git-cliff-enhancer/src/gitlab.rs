@@ -20,3 +20,21 @@ pub enum MergeRequestState {
     #[serde(rename = "merged")]
     Merged,
 }
+
+impl MergeRequestState {
+    /// Returns `true` if the merge request state is [`Locked`].
+    ///
+    /// [`Locked`]: MergeRequestState::Locked
+    #[must_use]
+    pub fn is_locked(&self) -> bool {
+        matches!(self, Self::Locked)
+    }
+
+    /// Returns `true` if the merge request state is [`Closed`].
+    ///
+    /// [`Closed`]: MergeRequestState::Closed
+    #[must_use]
+    pub fn is_closed(&self) -> bool {
+        matches!(self, Self::Closed)
+    }
+}
