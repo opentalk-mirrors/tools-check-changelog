@@ -22,7 +22,9 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | striptags | trim | upper_first }}
     {% for commit in commits %}
-        - {{ commit.message | upper_first }} (\
+        - \
+        {% if commit.scope %}({{commit.scope}}) {% endif %}\
+        {{ commit.message | upper_first }} (\
             {% if commit.gitlab.pr_number %}[!{{ commit.gitlab.pr_number }}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/merge_requests/{{ commit.gitlab.pr_number }}){% endif -%}\
             {% if commit.footers %}{% for footer in commit.footers %}\
                 {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}})){% endif %}\
@@ -42,13 +44,20 @@ conventional_commits = true
 
 # parsers that match first are prioritized
 commit_parsers = [
-  { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 5 --> Dependencies" },
+  # Rules are prioritized, keep this first so that it is matched before the other cho
+  { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 6 --> 📦 Dependencies" },
+  # Skip release related commits (sync changelog, bump version numbers)
+  { message = "^(chore)\\(release\\)*", skip = true },
 
-  { message = "^chore*", group = "<!-- 3 -->⚙ Miscellaneous" },
-  { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
   { message = "^feat*", group = "<!-- 0 -->🚀 New features" },
-  { message = "^fix*", group = "<!-- 1 -->🐛 Bug fixes" },
-  { message = "^perf*", group = "<!-- 2 -->⚡ Performance" },
+  { body = ".*security", group = "<!-- 1 --> 🛡️ Security" },
+  { message = "^fix*", group = "<!-- 2 -->🐛 Bug fixes" },
+  { message = "^perf*", group = "<!-- 3 -->⚡ Performance" },
+  { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
+  { message = "^refactor*", group = "<!-- 5 -->🔨 Refactor" },
+  # Dependencies 6, see further above
+  { message = "^style*", group = "<!-- 7 --> ✨ Style" },
+  { message = "^chore*", group = "<!-- 8 -->⚙ Miscellaneous" },
 
   # Skip processing the commit if the commit footer contains "changelog: ignore".
   { footer = "^changelog: ?ignore", skip = true },
