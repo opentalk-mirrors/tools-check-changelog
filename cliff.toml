@@ -49,15 +49,15 @@ commit_parsers = [
   # Skip release related commits (sync changelog, bump version numbers)
   { message = "^(chore)\\(release\\)*", skip = true },
 
-  { message = "^feat*", group = "<!-- 0 -->🚀 New features" },
-  { body = ".*security", group = "<!-- 1 --> 🛡️ Security" },
-  { message = "^fix*", group = "<!-- 2 -->🐛 Bug fixes" },
-  { message = "^perf*", group = "<!-- 3 -->⚡ Performance" },
-  { message = "^docs*", group = "<!-- 4 -->📚 Documentation" },
-  { message = "^refactor*", group = "<!-- 5 -->🔨 Refactor" },
+  { group = "<!-- 0 -->🚀 New features", message = "^feat*" },
+  { group = "<!-- 1 --> 🛡️ Security", body = ".*security" },
+  { group = "<!-- 2 -->🐛 Bug fixes", message = "^fix*" },
+  { group = "<!-- 3 -->⚡ Performance", message = "^perf*" },
+  { group = "<!-- 4 -->📚 Documentation", message = "^docs*" },
+  { group = "<!-- 5 -->🔨 Refactor", message = "^refactor*" },
   # Dependencies 6, see further above
-  { message = "^style*", group = "<!-- 7 --> ✨ Style" },
-  { message = "^chore*", group = "<!-- 8 -->⚙ Miscellaneous" },
+  { group = "<!-- 7 --> ✨ Style", message = "^style*" },
+  { group = "<!-- 8 -->⚙ Miscellaneous", message = "^chore*" },
 
   # Skip processing the commit if the commit footer contains "changelog: ignore".
   { footer = "^changelog: ?ignore", skip = true },
