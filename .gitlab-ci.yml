@@ -93,6 +93,14 @@ lint:markdown:
   script:
     - mdl --style .markdown_style.rb --warnings .
 
+lint:shellcheck:
+  stage: lint
+  <<: *default_job_condition
+  before_script:
+    - apt-get update && apt-get install -y shellcheck
+  script:
+    - git ls-files --exclude='*.sh' --ignored -c -z | xargs -0r shellcheck
+
 build:container:
   stage: build
   variables:
