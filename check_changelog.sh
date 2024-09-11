@@ -35,6 +35,10 @@ if diff "$temp_file_A" "$file_B" > /dev/null; then
     exit 0
 else
     echo "File $file_A does not start with the content of file $file_B."
+    echo
+    echo "This is the expected content at the start of $file_A:"
+    echo "-----------------------------------------------------------------------"
+    grep -v '^<!-- End section Unreleased -->$' < "$file_B"
     rm "$temp_file_A"
     exit 1
 fi
