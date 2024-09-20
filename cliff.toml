@@ -27,12 +27,13 @@ body = """
         {{ commit.message | upper_first }} (\
             {% if commit.gitlab.pr_number %}[!{{ commit.gitlab.pr_number }}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/merge_requests/{{ commit.gitlab.pr_number }}){% endif -%}\
             {% if commit.footers %}{% for footer in commit.footers %}\
-                {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}})){% endif %}\
+                {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}}){% endif %}\
             {%- endfor %}{% endif -%}\
         )
     {%- endfor %}
 {% endfor %}
 <!-- End section {{ section_name }} -->
+
 """
 
 # remove the leading and trailing whitespace from the templates
@@ -64,7 +65,7 @@ commit_parsers = [
 ]
 
 # regex for matching git tags
-tag_pattern = "v[0-9].*"
+tag_pattern = "v.*"
 
 # regex for skipping tags
-skip_tags = "v*-rc*"
+ignore_tags = "v.*-(?:rc|alpha|beta).*"
