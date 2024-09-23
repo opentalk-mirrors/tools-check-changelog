@@ -27,12 +27,13 @@ body = """
         {{ commit.message | upper_first }} (\
             {% if commit.gitlab.pr_number %}[!{{ commit.gitlab.pr_number }}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/merge_requests/{{ commit.gitlab.pr_number }}){% endif -%}\
             {% if commit.footers %}{% for footer in commit.footers %}\
-                {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}})){% endif %}\
+                {% if footer.token is matching("[Cc]lose[sd]|[Ff]ixe[sd]|[Rr]elate[sd]") %}, [#{{footer.value}}](https://git.opentalk.dev/{{ remote.gitlab.owner }}/{{ remote.gitlab.repo }}/-/issues/{{footer.value}}){% endif %}\
             {%- endfor %}{% endif -%}\
         )
     {%- endfor %}
 {% endfor %}
 <!-- End section {{ section_name }} -->
+
 """
 
 # remove the leading and trailing whitespace from the templates
@@ -44,6 +45,9 @@ conventional_commits = true
 
 # parsers that match first are prioritized
 commit_parsers = [
+  # Skip processing the commit if the commit footer contains "changelog: ignore".
+  { footer = "^changelog: ?ignore", skip = true },
+
   # Rules are prioritized, keep this first so that it is matched before the other cho
   { message = "^(chore|fix)\\(deps\\)*", group = "<!-- 6 --> 📦 Dependencies" },
   # Skip release related commits (sync changelog, bump version numbers)
@@ -58,13 +62,10 @@ commit_parsers = [
   # Dependencies 6, see further above
   { group = "<!-- 7 --> ✨ Style", message = "^style*" },
   { group = "<!-- 8 -->⚙ Miscellaneous", message = "^chore*" },
-
-  # Skip processing the commit if the commit footer contains "changelog: ignore".
-  { footer = "^changelog: ?ignore", skip = true },
 ]
 
 # regex for matching git tags
-tag_pattern = "v[0-9].*"
+tag_pattern = "v.*"
 
 # regex for skipping tags
-skip_tags = "v*-rc*"
+ignore_tags = "v.*-(?:rc|alpha|beta).*"
