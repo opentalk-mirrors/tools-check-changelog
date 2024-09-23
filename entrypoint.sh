@@ -12,8 +12,6 @@ export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
 export GITLAB_REPO=${GITLAB_REPO:-$CI_PROJECT_PATH}
 
 # we need to unset the GITLAB variales otherwise the context will be overwritten
-git-cliff -c "$GIT_CLIFF_CONFIG" --unreleased --context \
+git-cliff --config "$GIT_CLIFF_CONFIG" --unreleased --context \
     | git-cliff-enhancer -vvvv \
-    | git-cliff -c "$GIT_CLIFF_CONFIG" --from-context - -o CHANGELOG.should.md
-
-"$SCRIPT_DIR"/check_changelog.sh CHANGELOG.md CHANGELOG.should.md
+    | git-cliff --config "$GIT_CLIFF_CONFIG" --from-context - --unreleased --prepend CHANGELOG.md
