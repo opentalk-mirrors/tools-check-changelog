@@ -32,7 +32,6 @@ body = """
         )
     {%- endfor %}
 {% endfor %}
-<!-- End section {{ section_name }} -->
 
 """
 

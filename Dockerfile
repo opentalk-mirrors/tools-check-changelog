@@ -1,6 +1,6 @@
 FROM orhunp/git-cliff:sha-c34aaa0 AS cliff
 
-FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.79.0-bookworm AS builder
+FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.81.0-bookworm AS builder
 
 WORKDIR /git-cliff-enhancer
 
@@ -14,13 +14,12 @@ FROM debian:bookworm-slim
 
 WORKDIR /app
 
-COPY cliff.toml /usr/local/etc/cliff.toml
-ENV GIT_CLIFF_CONFIG=/usr/local/etc/cliff.toml
-
 COPY --from=cliff /usr/local/bin/git-cliff /usr/local/bin/git-cliff
 COPY --from=builder /git-cliff-enhancer/target/release/git-cliff-enhancer /usr/local/bin/git-cliff-enhancer
 
-COPY check_changelog.sh /usr/local/bin/check_changelog.sh
+COPY cliff.toml /usr/local/etc/cliff.toml
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+ENV GIT_CLIFF_CONFIG=/usr/local/etc/cliff.toml
 
 ENTRYPOINT ["bash", "/usr/local/bin/entrypoint.sh"]
