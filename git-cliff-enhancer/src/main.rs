@@ -9,7 +9,7 @@ use futures::{stream, StreamExt as _, TryStreamExt};
 use gitlab::MergeRequest;
 use input::{CliffCommit, CliffContext};
 use reqwest::{header::HeaderMap, Client, StatusCode};
-use secrecy::{ExposeSecret as _, Secret};
+use secrecy::{ExposeSecret as _, SecretString};
 use url::Url;
 
 static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
@@ -24,7 +24,7 @@ struct Cli {
     gitlab_api: Url,
 
     #[arg(long, env = "GITLAB_TOKEN")]
-    gitlab_token: Secret<String>,
+    gitlab_token: SecretString,
 
     #[arg(long, env = "GITLAB_REPO")]
     gitlab_repo: String,
@@ -98,7 +98,7 @@ async fn add_mr_to_commit(
 }
 
 async fn add_merge_request_information(
-    gitlab_token: &Secret<String>,
+    gitlab_token: &SecretString,
     gitlab_url: &Url,
     gitlab_repo: &str,
     concurrency: usize,
