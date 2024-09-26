@@ -132,14 +132,14 @@ async fn add_merge_request_information(
                 .as_deref()
                 .unwrap_or("<error while reading GitLab response>")
         );
-        bail!("Couldn't verify that repo {} exists", gitlab_repo)
+        bail!("Couldn't verify that repo {} exists", gitlab_repo);
     }
 
     stream::iter(commit_iter.map(|commit| async {
         add_mr_to_commit(client.clone(), gitlab_url, &url_encoded_repo, commit).await
     }))
     .buffer_unordered(concurrency)
-    .try_collect()
+    .try_collect::<()>()
     .await?;
 
     Ok(())
