@@ -1,5 +1,6 @@
 [package]
 edition = "2021"
+license = "EUPL-1.2"
 name = "git-cliff-enhancer"
 version = "0.1.0"
 
