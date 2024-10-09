@@ -21,14 +21,12 @@ lint:fmt:
   stage: lint
   <<: *default_job_condition
   script:
-    - cd git-cliff-enhancer
     - cargo +nightly fmt -- --check
 
 lint:clippy:
   stage: lint
   <<: *default_job_condition
   script:
-    - cd git-cliff-enhancer
     - cargo clippy --workspace --all-features --tests -- --deny warnings
 
 lint:doc:
@@ -37,7 +35,6 @@ lint:doc:
   variables:
     RUSTDOCFLAGS: -Dwarnings
   script:
-    - cd git-cliff-enhancer
     - cargo doc --workspace --no-deps
 
 lint:dependency_check:
@@ -50,7 +47,6 @@ lint:dependency_check:
         - deny.toml
     - if: $CI_PIPELINE_SOURCE == 'schedule'
   script:
-    - cd git-cliff-enhancer
     - cargo-deny --workspace check --deny unmatched-skip --deny license-not-encountered
 
 lint:unnecessary_dependencies:
@@ -60,7 +56,6 @@ lint:unnecessary_dependencies:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   before_script: if ! cargo machete --version; then cargo install cargo-machete; fi
   script:
-    - cd git-cliff-enhancer
     - cargo machete --with-metadata
 
 lint:commit:
