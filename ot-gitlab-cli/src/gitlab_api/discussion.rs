@@ -1,6 +1,10 @@
+use chrono::{DateTime, Utc};
 use gitlab::{
-    api::{projects::merge_requests::discussions, Query as _},
-    Gitlab,
+    api::{
+        projects::merge_requests::{discussions, notes},
+        Client, Query,
+    },
+    Gitlab, RestError,
 };
 use serde::{Deserialize, Serialize};
 
@@ -16,20 +20,19 @@ pub struct Discussion {
 pub struct Note {
     pub id: u64,
     #[serde(rename = "type", default)]
-    pub type_: NoteType,
+    pub type_: Option<NoteType>,
     pub body: String,
     pub author: NoteAuthor,
-    // pub created_at
+    pub created_at: DateTime<Utc>,
     // pub updated_at
     pub system: bool,
     pub noteable_id: u64,
     pub noteable_type: NoteableType,
-    pub project_id: u64,
-    pub noteable_iid: Option<u64>,
+    // pub project_id: u64,
+    // pub noteable_iid: Option<u64>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Default)]
-#[serde(from = "Option<NoteType>")]
 pub enum NoteType {
     #[default]
     Null,
@@ -64,11 +67,78 @@ pub fn fetch_discussions(
     project: &str,
     merge_request: u64,
 ) -> anyhow::Result<Vec<Discussion>> {
+    log::info!("fetch discussions");
     let call = discussions::MergeRequestDiscussions::builder()
         .project(project)
         .merge_request(merge_request)
         .build()?;
+    log::debug!("fetched discussions");
 
-    let discussions = call.query(client)?;
+    let response: serde_json::Value = call.query(client)?;
+    log::trace!("response: {:#?}", response);
+    let discussions = serde_json::from_value::<Vec<Discussion>>(response)?;
     Ok(discussions)
+}
+
+pub fn fetch_discussion_latest_discussion_by_user(
+    client: &Gitlab,
+    project: &str,
+    merge_request: u64,
+    user: u64,
+) -> anyhow::Result<Option<Discussion>> {
+    let discussions = fetch_discussions(client, project, merge_request)?;
+
+    // filter by user and sort by created_at of first note in discussion
+    let mut discussions_by_user: Vec<_> = discussions
+        .into_iter()
+        .filter(|d| {
+            d.notes
+                .first()
+                .is_some_and(|n| n.author.id == user && !n.system)
+        })
+        .collect();
+    discussions_by_user.sort_by(|a, b| {
+        a.notes
+            .first()
+            .map(|n| n.created_at)
+            .cmp(&b.notes.first().map(|n| n.created_at))
+    });
+
+    Ok(discussions_by_user.pop())
+}
+
+pub fn create_discussion<C: Client<Error = RestError>>(
+    client: &C,
+    project: &str,
+    merge_request: u64,
+    body: &str,
+) -> anyhow::Result<()> {
+    let call = discussions::CreateMergeRequestDiscussion::builder()
+        .project(project)
+        .merge_request(merge_request)
+        .body(body)
+        .build()?;
+    let response: serde_json::Value = call.query(client)?;
+    log::trace!("response: {:#?}", response);
+    Ok(())
+}
+
+pub fn modify_discussion<C: Client<Error = RestError>>(
+    client: &C,
+    project: &str,
+    merge_request: u64,
+    note: u64,
+    body: &str,
+) -> anyhow::Result<()> {
+    let call = notes::EditMergeRequestNote::builder()
+        .project(project)
+        .merge_request(merge_request)
+        .note(note)
+        .body(body)
+        .build()?;
+
+    let response: serde_json::Value = call.query(client)?;
+    log::trace!("response: {:#?}", response);
+
+    Ok(())
 }

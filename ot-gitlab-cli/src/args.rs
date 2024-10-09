@@ -1,5 +1,7 @@
+use std::{fmt::Display, path::PathBuf};
+
 use anyhow::Context;
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 use secrecy::SecretString;
 
 #[derive(Debug, Clone, Parser)]
@@ -13,15 +15,48 @@ pub struct AppArgs {
 
 #[derive(Debug, Clone, Subcommand)]
 pub enum DiscussionCommand {
-    Create,
-    Update,
-    Delete,
+    Create {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
+
+        #[arg(short = 'i', long = "input")]
+        body: PathBuf,
+    },
+    Update {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
+
+        #[arg(long = "id")]
+        id: u64,
+
+        #[arg(short = 'i', long = "input")]
+        body: PathBuf,
+    },
+    UpdateLatest {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
+
+        #[arg(short = 'i', long = "input")]
+        body: PathBuf,
+    },
     List {
         #[command(flatten)]
         api: GitLabApiConfig,
 
         #[command(flatten)]
         mr: GitLabMrReference,
+
+        #[arg()]
+        format: OutputFormat,
     },
 }
 
@@ -48,6 +83,18 @@ impl GitLabMrReference {
     pub fn merge_request_id(&self) -> u64 {
         self.mr_reference.1
     }
+}
+
+impl Display for GitLabMrReference {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}!{}", self.project(), self.merge_request_id())
+    }
+}
+
+#[derive(Debug, Clone, Copy, ValueEnum, Default)]
+pub enum OutputFormat {
+    #[default]
+    Json,
 }
 
 fn parse_mr_reference(reference: &str) -> anyhow::Result<(String, u64)> {
