@@ -24,6 +24,7 @@ pub fn run(args: AppArgs) -> anyhow::Result<()> {
         DiscussionCommand::UpdateLatest { api, mr, body } => {
             discussion_update_latest(api, mr, &body)
         }
+        DiscussionCommand::PutLatest { api, mr, body } => discussion_put(api, mr, &body),
     }
 }
 
@@ -98,5 +99,34 @@ fn discussion_update_latest(
     modify_discussion(&client, mr.project(), mr.merge_request_id(), note.id, &body)?;
 
     log::info!("discussion updated");
+    Ok(())
+}
+
+fn discussion_put(api: GitLabApiConfig, mr: GitLabMrReference, body: &Path) -> anyhow::Result<()> {
+    let client = Gitlab::new(api.url, api.token.expose_secret())?;
+
+    let current_user = current_user(&client)?;
+    let body = read_input(body)?;
+
+    let discussion = fetch_discussion_latest_discussion_by_user(
+        &client,
+        mr.project(),
+        mr.merge_request_id(),
+        current_user.id,
+    )?;
+
+    if let Some(discussion) = discussion {
+        let note = discussion
+            .notes
+            .first()
+            .context("Internal Error, empty discussion?")?;
+
+        modify_discussion(&client, mr.project(), mr.merge_request_id(), note.id, &body)?;
+        log::info!("discussion updated");
+    } else {
+        create_discussion(&client, mr.project(), mr.merge_request_id(), &body)?;
+        log::info!("discussion created");
+    };
+
     Ok(())
 }

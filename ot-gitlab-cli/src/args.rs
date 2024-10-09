@@ -48,6 +48,20 @@ pub enum DiscussionCommand {
         #[arg(short = 'i', long = "input")]
         body: PathBuf,
     },
+
+    /// Sets the content of the latest discussion to `body`.
+    ///
+    /// This will create a new discussion if no discussion for the current user was found.
+    PutLatest {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
+
+        #[arg(short = 'i', long = "input")]
+        body: PathBuf,
+    },
     List {
         #[command(flatten)]
         api: GitLabApiConfig,

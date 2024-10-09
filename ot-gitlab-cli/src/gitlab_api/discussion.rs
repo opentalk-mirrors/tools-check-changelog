@@ -112,7 +112,7 @@ pub fn create_discussion<C: Client<Error = RestError>>(
     project: &str,
     merge_request: u64,
     body: &str,
-) -> anyhow::Result<()> {
+) -> anyhow::Result<Discussion> {
     let call = discussions::CreateMergeRequestDiscussion::builder()
         .project(project)
         .merge_request(merge_request)
@@ -120,7 +120,8 @@ pub fn create_discussion<C: Client<Error = RestError>>(
         .build()?;
     let response: serde_json::Value = call.query(client)?;
     log::trace!("response: {:#?}", response);
-    Ok(())
+    let discussion = serde_json::from_value::<Discussion>(response)?;
+    Ok(discussion)
 }
 
 pub fn modify_discussion<C: Client<Error = RestError>>(
