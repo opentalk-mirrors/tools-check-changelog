@@ -1,8 +1,9 @@
-use std::{fmt::Display, path::PathBuf};
+use std::{fmt::Display, path::PathBuf, str::FromStr};
 
-use anyhow::Context;
+use anyhow::{ensure, Context};
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use secrecy::SecretString;
+use url::Url;
 
 #[derive(Debug, Clone, Parser)]
 pub struct AppArgs {
@@ -76,11 +77,28 @@ pub enum DiscussionCommand {
 
 #[derive(Debug, Clone, Args)]
 pub struct GitLabApiConfig {
-    #[arg(long = "api-url", env = "GITLAB_API_URL")]
+    #[arg(long = "api-url", env = "GITLAB_API_URL", value_parser = parse_url)]
     pub url: String,
 
     #[arg(long = "api-token", env = "GITLAB_TOKEN")]
     pub token: SecretString,
+}
+
+/// We only allow a for the domain part. Be more forgiving by trying to parse a
+/// url and strip the unwanted parts.
+fn parse_url(url: &str) -> anyhow::Result<String> {
+    if let Ok(gitlab_url) = Url::from_str(url) {
+        ensure!(
+            gitlab_url.path() == "/api/v4",
+            "Only the domain is allowed, the path is automatically set to `/api/v4`"
+        );
+        gitlab_url
+            .domain()
+            .context("Invalid gitlab url")
+            .map(String::from)
+    } else {
+        Ok(url.to_string())
+    }
 }
 
 #[derive(Debug, Clone, Args)]
