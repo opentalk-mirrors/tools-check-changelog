@@ -16,6 +16,7 @@ image: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.81.0-bookworm
 stages:
   - lint
   - build
+  - pipeline
 
 lint:fmt:
   stage: lint
@@ -95,6 +96,23 @@ lint:shellcheck:
     - apt-get update && apt-get install -y shellcheck
   script:
     - git ls-files --exclude='*.sh' --ignored -c -z | xargs -0r shellcheck
+
+pipeline:changelog:
+  stage: pipeline
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+    - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
+  image:
+    name: git.opentalk.dev:5050/opentalk/tools/check-changelog:dev
+    entrypoint: ['']
+  variables:
+    GITLAB_TOKEN: $CHANGELOG_BOT_TOKEN
+    TARGET_REPO: $PIPELINE_PROJECT_PATH
+    SOURCE_REPO: $PIPELINE_MERGE_REQUEST_PROJECT_PATH
+    SOURCE_BRANCH: $PIPELINE_MERGE_REQUEST_SOURCE_BRANCH_NAME
+    GITLAB_MR: $PIPELINE_MERGE_REQUEST_IID
+  script:
+    - ./comment-changelog-additions.sh
 
 build:container:
   stage: build
