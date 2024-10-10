@@ -1,2 +1,2 @@
 pub mod discussion;
-pub mod users;
+pub mod user;

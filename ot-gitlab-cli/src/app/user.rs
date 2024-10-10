@@ -3,7 +3,7 @@ use secrecy::ExposeSecret as _;
 
 use crate::{
     args::{GitLabApiConfig, OutputFormat, UserCommand},
-    gitlab_api::users::current_user,
+    gitlab_api::user::current_user,
 };
 
 pub(crate) fn run(user_command: UserCommand) -> anyhow::Result<()> {

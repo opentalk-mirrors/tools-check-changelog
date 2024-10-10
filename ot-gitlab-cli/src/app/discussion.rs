@@ -11,7 +11,7 @@ use crate::{
             create_discussion, fetch_discussion_latest_discussion_by_user, fetch_discussions,
             modify_discussion,
         },
-        users::current_user,
+        user::current_user,
     },
     input::read_input,
 };
