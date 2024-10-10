@@ -11,7 +11,13 @@ pub struct AppArgs {
     pub verbose: clap_verbosity_flag::Verbosity,
 
     #[command(subcommand)]
-    pub command: DiscussionCommand,
+    pub command: GitlabCommand,
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum GitlabCommand {
+    #[command(subcommand)]
+    Discussion(DiscussionCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
