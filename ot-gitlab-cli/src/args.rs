@@ -18,6 +18,9 @@ pub struct AppArgs {
 pub enum GitlabCommand {
     #[command(subcommand)]
     Discussion(DiscussionCommand),
+
+    #[command(subcommand)]
+    User(UserCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
@@ -75,6 +78,17 @@ pub enum DiscussionCommand {
 
         #[command(flatten)]
         mr: GitLabMrReference,
+
+        #[arg()]
+        format: OutputFormat,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum UserCommand {
+    WhoAmI {
+        #[command(flatten)]
+        api: GitLabApiConfig,
 
         #[arg()]
         format: OutputFormat,
