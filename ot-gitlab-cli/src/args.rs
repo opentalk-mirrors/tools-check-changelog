@@ -21,6 +21,9 @@ pub enum GitlabCommand {
 
     #[command(subcommand)]
     User(UserCommand),
+
+    #[command(subcommand)]
+    Project(ProjectCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
@@ -92,6 +95,20 @@ pub enum UserCommand {
 
         #[arg()]
         format: OutputFormat,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum ProjectCommand {
+    Get {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'f')]
+        format: OutputFormat,
+
+        #[arg(short = 'p')]
+        project: String,
     },
 }
 
