@@ -110,6 +110,14 @@ pub enum ProjectCommand {
         #[arg(short = 'p')]
         project: String,
     },
+
+    AuthorizedCloneUrl {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'p')]
+        project: String,
+    },
 }
 
 #[derive(Debug, Clone, Args)]
