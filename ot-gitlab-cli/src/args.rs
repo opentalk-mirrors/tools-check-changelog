@@ -11,7 +11,19 @@ pub struct AppArgs {
     pub verbose: clap_verbosity_flag::Verbosity,
 
     #[command(subcommand)]
-    pub command: DiscussionCommand,
+    pub command: GitlabCommand,
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum GitlabCommand {
+    #[command(subcommand)]
+    Discussion(DiscussionCommand),
+
+    #[command(subcommand)]
+    User(UserCommand),
+
+    #[command(subcommand)]
+    Project(ProjectCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
@@ -72,6 +84,39 @@ pub enum DiscussionCommand {
 
         #[arg()]
         format: OutputFormat,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum UserCommand {
+    WhoAmI {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg()]
+        format: OutputFormat,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum ProjectCommand {
+    Get {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'f')]
+        format: OutputFormat,
+
+        #[arg(short = 'p')]
+        project: String,
+    },
+
+    AuthorizedCloneUrl {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'p')]
+        project: String,
     },
 }
 
