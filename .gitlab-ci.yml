@@ -130,6 +130,9 @@ build:container:
     # Don't run on feature branches if there is a MR
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
+    # Don't run on triggered/child pipelines
+    - if: $CI_PIPELINE_SOURCE == "pipeline" || $CI_PIPELINE_SOURCE == "parent_pipeline"
+      when: never
     - if: >
         $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH &&
         $CI_COMMIT_BRANCH != null
