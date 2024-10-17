@@ -42,7 +42,8 @@ if [ -z "$GITLAB_REPO" ] && [ -z "$CI_PROJECT_PATH" ]; then
 fi
 export GITLAB_REPO=${GITLAB_REPO:-$CI_PROJECT_PATH}
 
-# we need to unset the GITLAB variales otherwise the context will be overwritten
-git-cliff --config "$GIT_CLIFF_CONFIG" --unreleased --tag "$NEXT_VERSION" --context \
-    | git-cliff-enhancer -vvvv \
-    | git-cliff --config "$GIT_CLIFF_CONFIG" --from-context - --unreleased --tag "$NEXT_VERSION" --prepend CHANGELOG.md
+git-cliff-enhancer -vv \
+    --config "$GIT_CLIFF_CONFIG" \
+    --unreleased \
+    --tag "$NEXT_VERSION" \
+    --prepend CHANGELOG.md
