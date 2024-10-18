@@ -62,9 +62,10 @@ git fetch mr-remote "$SOURCE_BRANCH"
 TARGET_BRANCH=$( git rev-parse --abbrev-ref "$TARGET_BRANCH@{u}" )
 
 export GITLAB_REPO="$TARGET_REPO"
-git-cliff --config "$GIT_CLIFF_CONFIG" --context "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH" \
-    | git-cliff-enhancer -vvvv \
-    | git-cliff --config "$GIT_CLIFF_CONFIG" --from-context - -o "$temp_file"
+git-cliff-enhancer -vv \
+    --config "$GIT_CLIFF_CONFIG" \
+    -o "$temp_file"
+    "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
 # We prepand every line with `> ` using awk
 echo -e "This MR will add the following changelog entries:
