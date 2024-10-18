@@ -1,4 +1,4 @@
-FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.81.0-bookworm AS builder
+FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.82.0-bookworm AS builder
 
 WORKDIR /ck-changelog
 
