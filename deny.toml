@@ -70,6 +70,7 @@ feature-depth = 1
 # A list of advisory IDs to ignore. Note that ignored advisories will still
 # output a note when they are encountered.
 ignore = [
+  { id = "RUSTSEC-2024-0320", reason = "used in git-cliff, unmaintained != broken" },
   #"RUSTSEC-0000-0000",
   #{ id = "RUSTSEC-0000-0000", reason = "you can specify a reason the advisory is ignored" },
   #"a-crate-that-is-yanked@0.1.1", # you can also ignore yanked crate versions if you wish
@@ -90,7 +91,9 @@ ignore = [
 # [possible values: any SPDX 3.11 short identifier (+ optional exception)].
 allow = [
   "Apache-2.0",
+  "BSD-2-Clause",
   "BSD-3-Clause",
+  "BSL-1.0",
   "EUPL-1.2",
   "ISC",
   "MIT",
@@ -209,7 +212,31 @@ deny = [
 #exact = true
 
 # Certain crates/versions that will be skipped when doing duplicate detection.
-skip = ["heck@0.4", "syn@1"]
+skip = [
+  "heck@0.4",
+  "syn@1",
+
+  # Caused by git-cliff
+  "base64@0.21",
+  "bincode@1",
+  "env_logger@0.10",
+  "hashbrown@0.14",
+  "hermit-abi@0.3",
+  "secrecy@0.8",
+  "windows-core@0.52",
+  "windows-core@0.52",
+  "windows-sys@0.48",
+  "windows-sys@0.52",
+  "windows-targets@0.48",
+  "windows_aarch64_gnullvm@0.48",
+  "windows_aarch64_msvc@0.48",
+  "windows_i686_gnu@0.48",
+  "windows_i686_msvc@0.48",
+  "windows_x86_64_gnu@0.48",
+  "windows_x86_64_gnullvm@0.48",
+  "windows_x86_64_gnullvm@0.48",
+  "windows_x86_64_msvc@0.48",
+]
 # Similarly to `skip` allows you to skip certain crates during duplicate
 # detection. Unlike skip, it also includes the entire tree of transitive
 # dependencies starting at the specified crate, up to a certain depth, which is
@@ -232,7 +259,9 @@ unknown-git = "warn"
 # if not specified. If it is specified but empty, no registries are allowed.
 allow-registry = ["https://github.com/rust-lang/crates.io-index"]
 # List of URLs for allowed Git repositories
-allow-git = []
+allow-git = [
+  "http://github.com/weichweich/git-cliff.git?branch=add-modifier-callback",
+]
 
 [sources.allow-org]
 # github.com organizations to allow git sources for
