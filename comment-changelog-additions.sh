@@ -71,6 +71,10 @@ git-cliff-enhancer -vv \
 echo -e "This MR will add the following changelog entries:
 
 $(awk '{print "> "$0}' < "$temp_file")
+
+Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/README.md)
+for more information or [open an issue](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
+if you encounter any problems.
 " | ot-gitlab-cli discussion put-latest -vv -i -
 
 popd
