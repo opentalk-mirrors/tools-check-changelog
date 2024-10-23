@@ -24,18 +24,20 @@ for var in "${env_vars[@]}"; do
     fi
 done
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-export GIT_CLIFF_CONFIG=${GIT_CLIFF_CONFIG:-$SCRIPT_DIR/cliff.toml}
+export GIT_CLIFF_CONFIG=${GIT_CLIFF_CONFIG:-"opentalk"}
+GIT_CLIFF=${GIT_CLIFF:-"git-cliff"}
 export GITLAB_MR_REF="$TARGET_REPO!$GITLAB_MR"
 export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
 TARGET_BRANCH="main"
+
 echo " Creating changelog notification for
 Merge Request: $GITLAB_MR_REF
 Target Repository: $TARGET_REPO
 Target Branch: $TARGET_BRANCH
 Source Repository: $SOURCE_REPO
 Source Branch: $SOURCE_BRANCH
+
+git-cliff config: $GIT_CLIFF_CONFIG
 "
 
 # Don't include any header in the output
@@ -62,7 +64,7 @@ git fetch mr-remote "$SOURCE_BRANCH"
 TARGET_BRANCH=$( git rev-parse --abbrev-ref "$TARGET_BRANCH@{u}" )
 
 export GITLAB_REPO="$TARGET_REPO"
-git-cliff-enhancer -vv \
+git-cliff -vv \
     --config "$GIT_CLIFF_CONFIG" \
     -o "$temp_file" \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
@@ -71,6 +73,8 @@ git-cliff-enhancer -vv \
 echo -e "This MR will add the following changelog entries:
 
 $(awk '{print "> "$0}' < "$temp_file")
+
+If you are happy with the changelog entry, resolve this thread.
 
 Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/README.md)
 for more information or [open an issue](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
