@@ -25,6 +25,7 @@ pub(crate) fn run(command: DiscussionCommand) -> anyhow::Result<()> {
             discussion_update_latest(api, mr, &body)
         }
         DiscussionCommand::PutLatest { api, mr, body } => discussion_put(api, mr, &body),
+        DiscussionCommand::Latest { api, mr, format } => latest_discussion(api, mr, format),
     }
 }
 
@@ -132,5 +133,27 @@ pub(crate) fn discussion_put(
         log::info!("discussion created");
     };
 
+    Ok(())
+}
+
+pub(crate) fn latest_discussion(
+    api: GitLabApiConfig,
+    mr: GitLabMrReference,
+    format: OutputFormat,
+) -> anyhow::Result<()> {
+    let client: Gitlab = Gitlab::new(api.url, api.token.expose_secret())?;
+
+    let current_user = current_user(&client)?;
+
+    let discussion = fetch_discussion_latest_discussion_by_user(
+        &client,
+        mr.project(),
+        mr.merge_request_id(),
+        current_user.id,
+    )?;
+
+    match format {
+        OutputFormat::Json => println!("{}", serde_json::to_string_pretty(&discussion)?),
+    }
     Ok(())
 }

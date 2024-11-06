@@ -51,6 +51,10 @@ pub enum DiscussionCommand {
         #[arg(short = 'i', long = "input")]
         body: PathBuf,
     },
+
+    /// This will update the latest comment of the current user.
+    ///
+    /// If no discussion was found for the user, an error is returned.
     UpdateLatest {
         #[command(flatten)]
         api: GitLabApiConfig,
@@ -75,6 +79,8 @@ pub enum DiscussionCommand {
         #[arg(short = 'i', long = "input")]
         body: PathBuf,
     },
+
+    /// List all discussions for a merge request.
     List {
         #[command(flatten)]
         api: GitLabApiConfig,
@@ -82,7 +88,19 @@ pub enum DiscussionCommand {
         #[command(flatten)]
         mr: GitLabMrReference,
 
-        #[arg()]
+        #[arg(short = 'f')]
+        format: OutputFormat,
+    },
+
+    /// Print the latest discussion of the user for a merge request.
+    Latest {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
+
+        #[arg(short = 'f')]
         format: OutputFormat,
     },
 }
