@@ -1,8 +1,10 @@
+use anyhow::Context;
 use chrono::{DateTime, Utc};
 use gitlab::{
     api::{
+        paged,
         projects::merge_requests::{discussions, notes},
-        Client, Query,
+        Client, Pagination, Query,
     },
     Gitlab, RestError,
 };
@@ -72,11 +74,22 @@ pub fn fetch_discussions(
         .project(project)
         .merge_request(merge_request)
         .build()?;
-    log::debug!("fetched discussions");
+    let call = paged(call, Pagination::Limit(100));
 
-    let response: serde_json::Value = call.query(client)?;
-    log::trace!("response: {:#?}", response);
-    let discussions = serde_json::from_value::<Vec<Discussion>>(response)?;
+    let mut discussions = Vec::new();
+    for page in call.into_iter(client) {
+        let response: serde_json::Value = page.context("Failed to query discussion")?;
+        log::trace!("response: {:#?}", discussions);
+
+        discussions.extend(serde_json::from_value(response));
+    }
+    let discussions = discussions
+        .into_iter()
+        .map(serde_json::from_value::<Discussion>)
+        .collect::<Result<Vec<_>, _>>()
+        .context("Failed to decode discussion")?;
+
+    log::debug!("fetched discussions");
     Ok(discussions)
 }
 
