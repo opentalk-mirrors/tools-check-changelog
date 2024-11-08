@@ -6,7 +6,7 @@
 
 set -e
 
-for cmd in git-cliff git-cliff-enhancer ot-gitlab-cli git awk; do
+for cmd in git-cliff ot-gitlab-cli git awk; do
     if ! command -v $cmd &> /dev/null; then
         echo "Error: $cmd is not installed or not found in PATH" >&2
         exit 1
