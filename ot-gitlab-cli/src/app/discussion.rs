@@ -8,7 +8,7 @@ use crate::{
     args::{DiscussionCommand, GitLabApiConfig, GitLabMrReference, OutputFormat},
     gitlab_api::{
         discussion::{
-            create_discussion, fetch_discussion_latest_discussion_by_user, fetch_discussions,
+            create_discussion, fetch_discussions, fetch_latest_discussion_by_user,
             modify_discussion,
         },
         user::current_user,
@@ -84,7 +84,7 @@ pub(crate) fn discussion_update_latest(
     let current_user = current_user(&client)?;
     let body = read_input(body)?;
 
-    let discussion = fetch_discussion_latest_discussion_by_user(
+    let discussion = fetch_latest_discussion_by_user(
         &client,
         mr.project(),
         mr.merge_request_id(),
@@ -113,7 +113,7 @@ pub(crate) fn discussion_put(
     let current_user = current_user(&client)?;
     let body = read_input(body)?;
 
-    let discussion = fetch_discussion_latest_discussion_by_user(
+    let discussion = fetch_latest_discussion_by_user(
         &client,
         mr.project(),
         mr.merge_request_id(),
@@ -145,7 +145,7 @@ pub(crate) fn latest_discussion(
 
     let current_user = current_user(&client)?;
 
-    let discussion = fetch_discussion_latest_discussion_by_user(
+    let discussion = fetch_latest_discussion_by_user(
         &client,
         mr.project(),
         mr.merge_request_id(),

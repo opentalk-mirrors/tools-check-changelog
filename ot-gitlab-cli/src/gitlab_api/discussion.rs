@@ -93,7 +93,7 @@ pub fn fetch_discussions(
     Ok(discussions)
 }
 
-pub fn fetch_discussion_latest_discussion_by_user(
+pub fn fetch_latest_discussion_by_user(
     client: &Gitlab,
     project: &str,
     merge_request: u64,
