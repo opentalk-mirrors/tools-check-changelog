@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e -o pipefail
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
 if ! command -v git-cliff-enhancer &> /dev/null; then
     echo "Error: git-cliff-enhancer is not installed or not found in PATH" >&2
     exit 1
@@ -29,11 +27,7 @@ if [ -z "$GITLAB_API_URL" ] && [ -z "$CI_API_V4_URL" ]; then
 fi
 export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
 
-if ! { [ -n "$GIT_CLIFF_CONFIG" ] && [ -f "$GIT_CLIFF_CONFIG" ]; } && [ ! -f "$SCRIPT_DIR/cliff.toml" ]; then
-    echo "Error: Neither GIT_CLIFF_CONFIG is set to a valid file nor does $SCRIPT_DIR/cliff.toml exist."
-    exit 1
-fi
-export GIT_CLIFF_CONFIG=${GIT_CLIFF_CONFIG:-$SCRIPT_DIR/cliff.toml}
+export GIT_CLIFF_CONFIG=${GIT_CLIFF_CONFIG:-"opentalk"}
 
 # Use GITLAB_REPO if present or use CI_PROJECT_PATH from the gitlab CI
 if [ -z "$GITLAB_REPO" ] && [ -z "$CI_PROJECT_PATH" ]; then
@@ -42,7 +36,7 @@ if [ -z "$GITLAB_REPO" ] && [ -z "$CI_PROJECT_PATH" ]; then
 fi
 export GITLAB_REPO=${GITLAB_REPO:-$CI_PROJECT_PATH}
 
-git-cliff-enhancer -vv \
+git-cliff -vv \
     --config "$GIT_CLIFF_CONFIG" \
     --unreleased \
     --tag "$NEXT_VERSION" \

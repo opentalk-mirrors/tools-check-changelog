@@ -1,10 +1,5 @@
-use args::AppArgs;
 use clap::Parser as _;
-
-mod app;
-pub mod args;
-pub mod gitlab_api;
-pub mod input;
+use ot_gitlab_cli::args::AppArgs;
 
 fn main() -> anyhow::Result<()> {
     let app_args = AppArgs::parse();
@@ -15,5 +10,5 @@ fn main() -> anyhow::Result<()> {
 
     log::info!("Starting {}", env!("CARGO_BIN_NAME"));
 
-    app::run(app_args)
+    ot_gitlab_cli::app::run(app_args)
 }
