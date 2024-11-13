@@ -12,8 +12,7 @@ commit messages follow a specific format—namely, the [Conventional Commits][Co
 specification—and are meaningful within the context of a changelog.
 
 Once the commit messages adhere to our guidelines, we can generate the changelog.
-This is done using [`git-cliff-enhancer`](./git-cliff-enhancer/), which is a
-customized version of [`git-cliff`](https://git-cliff.org/).
+This is done using a customized version of [`git-cliff`](https://git-cliff.org/).
 
 ## Reviewing Changelog Entries
 
@@ -104,10 +103,10 @@ export GITLAB_TOKEN=$(cat ~/.gitlab_token)
 bash update-changelog.sh "<version>"
 ```
 
-Make sure to install `git-cliff-enhancer` before running the script:
+Make sure to install our custom `git-cliff` before running the script:
 
 ```bash
-cargo install --git ssh://git@git.opentalk.dev:222/opentalk/tools/check-changelog.git git-cliff-enhancer
+cargo install --git ssh://git@git.opentalk.dev:222/opentalk/tools/git-cliff.git git-cliff
 ```
 
 [ConCom]: https://www.conventionalcommits.org/en/v1.0.0/

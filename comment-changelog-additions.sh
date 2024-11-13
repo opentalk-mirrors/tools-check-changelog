@@ -69,7 +69,7 @@ git-cliff -vv \
     -o "$temp_file" \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
-# We prepand every line with `> ` using awk
+# We prepend every line with `> ` using awk
 echo -e "This MR will add the following changelog entries:
 
 $(awk '{print "> "$0}' < "$temp_file")
