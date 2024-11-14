@@ -67,6 +67,7 @@ export GITLAB_REPO="$TARGET_REPO"
 git-cliff -vv \
     --config "$GIT_CLIFF_CONFIG" \
     -o "$temp_file" \
+    --tag hidden \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
 # We prepend every line with `> ` using awk
@@ -76,9 +77,9 @@ $(awk '{print "> "$0}' < "$temp_file")
 
 If you are happy with the changelog entry, resolve this thread.
 
-Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/README.md)
-for more information or [open an issue](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
-if you encounter any problems.
+* [How to write commit messages?](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/doc/commit-message-format.md)
+* Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog)
+* [Report an issue or request a feature](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
 " | ot-gitlab-cli discussion put-latest -vv -i -
 
 popd
