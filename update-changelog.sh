@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e -o pipefail
 
-if ! command -v git-cliff-enhancer &> /dev/null; then
-    echo "Error: git-cliff-enhancer is not installed or not found in PATH" >&2
-    exit 1
-fi
-
 # Ensure the gitlab token is available
 if [ -z "$GITLAB_TOKEN" ]; then
     echo "Error: GITLAB_TOKEN must be set and contain a valid GitLab access token with 'read_api' scope."
