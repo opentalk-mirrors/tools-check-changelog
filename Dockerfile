@@ -1,5 +1,5 @@
 FROM git.opentalk.dev:5050/opentalk/tools/git-cliff:v2.7.0-ot.1 AS git-cliff
-FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.82.0-bookworm AS builder
+FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.83.0-bookworm AS builder
 
 WORKDIR /app
 
