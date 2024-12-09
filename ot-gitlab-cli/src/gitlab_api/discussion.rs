@@ -21,8 +21,6 @@ pub struct Discussion {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Note {
     pub id: u64,
-    #[serde(rename = "type", default)]
-    pub type_: Option<NoteType>,
     pub body: String,
     pub author: NoteAuthor,
     pub created_at: DateTime<Utc>,
@@ -32,20 +30,6 @@ pub struct Note {
     pub noteable_type: NoteableType,
     // pub project_id: u64,
     // pub noteable_iid: Option<u64>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, Default)]
-pub enum NoteType {
-    #[default]
-    Null,
-    DiscussionNote,
-    DiffNote,
-}
-
-impl From<Option<Self>> for NoteType {
-    fn from(value: Option<Self>) -> Self {
-        value.unwrap_or_default()
-    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
