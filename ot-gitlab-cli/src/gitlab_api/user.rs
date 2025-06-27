@@ -51,7 +51,7 @@ pub fn current_user<C: Client<Error = RestError>>(client: &C) -> anyhow::Result<
     let call = users::CurrentUser::builder().build()?;
 
     let response: serde_json::Value = call.query(client)?;
-    log::trace!("response: {:#?}", response);
+    log::trace!("response: {response:#?}");
     let user = serde_json::from_value::<User>(response)?;
     Ok(user)
 }

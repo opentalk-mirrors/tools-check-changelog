@@ -63,7 +63,7 @@ pub fn fetch_discussions(
     let mut discussions = Vec::new();
     for page in call.into_iter(client) {
         let response: serde_json::Value = page.context("Failed to query discussion")?;
-        log::trace!("response: {:#?}", discussions);
+        log::trace!("response: {discussions:#?}");
 
         discussions.extend(serde_json::from_value(response));
     }
@@ -116,7 +116,7 @@ pub fn create_discussion<C: Client<Error = RestError>>(
         .body(body)
         .build()?;
     let response: serde_json::Value = call.query(client)?;
-    log::trace!("response: {:#?}", response);
+    log::trace!("response: {response:#?}");
     let discussion = serde_json::from_value::<Discussion>(response)?;
     Ok(discussion)
 }
@@ -136,7 +136,7 @@ pub fn modify_discussion<C: Client<Error = RestError>>(
         .build()?;
 
     let response: serde_json::Value = call.query(client)?;
-    log::trace!("response: {:#?}", response);
+    log::trace!("response: {response:#?}");
 
     Ok(())
 }
