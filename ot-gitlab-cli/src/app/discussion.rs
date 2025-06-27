@@ -90,7 +90,7 @@ pub(crate) fn discussion_update_latest(
         mr.merge_request_id(),
         current_user.id,
     )?
-    .with_context(|| format!("You didn't open a discussion for merge request {}", mr))?;
+    .with_context(|| format!("You didn't open a discussion for merge request {mr}"))?;
 
     let note = discussion
         .notes

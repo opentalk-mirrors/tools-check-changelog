@@ -25,7 +25,7 @@ pub fn fetch_project<C: Client<Error = RestError>>(
     let call = api::projects::Project::builder().project(project).build()?;
 
     let response: serde_json::Value = call.query(client)?;
-    log::trace!("response: {:#?}", response);
+    log::trace!("response: {response:#?}");
     let project = serde_json::from_value::<Project>(response)?;
 
     Ok(project)
