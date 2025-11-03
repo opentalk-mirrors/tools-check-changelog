@@ -81,6 +81,9 @@ pub enum DiscussionCommand {
 
         #[arg(short = 'i', long = "input")]
         body: PathBuf,
+
+        #[arg(long = "resolve")]
+        resolve: bool,
     },
 
     /// List all discussions for a merge request.

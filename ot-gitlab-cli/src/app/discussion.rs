@@ -9,7 +9,7 @@ use crate::{
     gitlab_api::{
         discussion::{
             create_discussion, fetch_discussions, fetch_latest_discussion_by_user,
-            modify_discussion,
+            modify_discussion, resolve_discussion,
         },
         user::current_user,
     },
@@ -24,7 +24,12 @@ pub(crate) fn run(command: DiscussionCommand) -> anyhow::Result<()> {
         DiscussionCommand::UpdateLatest { api, mr, body } => {
             discussion_update_latest(api, mr, &body)
         }
-        DiscussionCommand::PutLatest { api, mr, body } => discussion_put(api, mr, &body),
+        DiscussionCommand::PutLatest {
+            api,
+            mr,
+            body,
+            resolve,
+        } => discussion_put(api, mr, &body, resolve),
         DiscussionCommand::Latest { api, mr, format } => latest_discussion(api, mr, format),
     }
 }
@@ -107,6 +112,7 @@ pub(crate) fn discussion_put(
     api: GitLabApiConfig,
     mr: GitLabMrReference,
     body: &Path,
+    resolve: bool,
 ) -> anyhow::Result<()> {
     let client = Gitlab::new(api.url, api.token.expose_secret())?;
 
@@ -120,18 +126,28 @@ pub(crate) fn discussion_put(
         current_user.id,
     )?;
 
-    if let Some(discussion) = discussion {
+    let discussion = if let Some(discussion) = discussion {
         let note = discussion
             .notes
             .first()
             .context("Internal Error, empty discussion?")?;
 
-        modify_discussion(&client, mr.project(), mr.merge_request_id(), note.id, &body)?;
+        modify_discussion(&client, mr.project(), mr.merge_request_id(), note.id, &body)
+            .context("Failed to modify discussion")?;
         log::info!("discussion updated");
+        discussion
     } else {
-        create_discussion(&client, mr.project(), mr.merge_request_id(), &body)?;
+        let discussion = create_discussion(&client, mr.project(), mr.merge_request_id(), &body)
+            .context("Failed to create discussion")?;
         log::info!("discussion created");
+        discussion
     };
+
+    if resolve {
+        resolve_discussion(&client, mr.project(), mr.merge_request_id(), &discussion.id)
+            .context("Failed to resolve discussion")?;
+        log::info!("discussion resolved");
+    }
 
     Ok(())
 }

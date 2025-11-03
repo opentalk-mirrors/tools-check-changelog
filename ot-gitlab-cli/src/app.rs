@@ -10,6 +10,8 @@ pub fn run(args: AppArgs) -> anyhow::Result<()> {
         GitlabCommand::Discussion(discussion_command) => discussion::run(discussion_command),
         GitlabCommand::User(user_command) => user::run(user_command),
         GitlabCommand::Project(project_command) => project::run(project_command),
-        GitlabCommand::MergeRequest(merge_request_command) => merge_request::run(merge_request_command),
+        GitlabCommand::MergeRequest(merge_request_command) => {
+            merge_request::run(merge_request_command)
+        }
     }
 }
