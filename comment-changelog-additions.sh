@@ -20,7 +20,7 @@ env_vars=("TARGET_REPO" "SOURCE_REPO" "GITLAB_MR" "SOURCE_BRANCH" "GITLAB_TOKEN"
 for var in "${env_vars[@]}"; do
     if [ -z "${!var}" ]; then
         echo "Error: Environment variable $var is not set." >&2
-        exit 1  # Exit with error if a variable is not set
+        exit 1 # Exit with error if a variable is not set
     fi
 done
 
@@ -70,6 +70,13 @@ git-cliff -vv \
     --tag hidden \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
+GITLAB_CLI_OPTIONS=()
+SHOULD_RESOLVE=$(ot-gitlab-cli merge-request get-labels -f json | jq '. | any(contains("Maintenance"))')
+if [ "$SHOULD_RESOLVE" == "true" ]; then
+    echo "Mark discussion as resolved. This is a maintenance MR."
+    GITLAB_CLI_OPTIONS=("${GITLAB_CLI_OPTIONS[@]}" --resolve)
+fi
+
 # We prepend every line with `> ` using awk
 echo -e "This MR will add the following changelog entries:
 
@@ -80,7 +87,7 @@ If you are happy with the changelog entry, resolve this thread.
 * [How to write commit messages?](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/doc/commit-message-format.md)
 * Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog)
 * [Report an issue or request a feature](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
-" | ot-gitlab-cli discussion put-latest -vv -i -
+" | ot-gitlab-cli discussion put-latest -vvvv -i - "${GITLAB_CLI_OPTIONS[@]}"
 
 popd
 
