@@ -24,6 +24,9 @@ pub enum GitlabCommand {
 
     #[command(subcommand)]
     Project(ProjectCommand),
+
+    #[command(subcommand)]
+    MergeRequest(MergeRequestCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
@@ -135,6 +138,20 @@ pub enum ProjectCommand {
 
         #[arg(short = 'p')]
         project: String,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum MergeRequestCommand {
+    GetLabels {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'f')]
+        format: OutputFormat,
+
+        #[command(flatten)]
+        mr: GitLabMrReference,
     },
 }
 
