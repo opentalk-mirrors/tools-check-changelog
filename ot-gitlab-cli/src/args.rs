@@ -82,6 +82,7 @@ pub enum DiscussionCommand {
         #[arg(short = 'i', long = "input")]
         body: PathBuf,
 
+        /// Resolve the discussion
         #[arg(long = "resolve")]
         resolve: bool,
     },
@@ -94,7 +95,7 @@ pub enum DiscussionCommand {
         #[command(flatten)]
         mr: GitLabMrReference,
 
-        #[arg(short = 'f')]
+        #[arg(short = 'f', long = "format")]
         format: OutputFormat,
     },
 
@@ -106,7 +107,7 @@ pub enum DiscussionCommand {
         #[command(flatten)]
         mr: GitLabMrReference,
 
-        #[arg(short = 'f')]
+        #[arg(short = 'f', long = "format")]
         format: OutputFormat,
     },
 }
@@ -117,7 +118,7 @@ pub enum UserCommand {
         #[command(flatten)]
         api: GitLabApiConfig,
 
-        #[arg()]
+        #[arg(short = 'f', long = "format")]
         format: OutputFormat,
     },
 }
@@ -128,10 +129,10 @@ pub enum ProjectCommand {
         #[command(flatten)]
         api: GitLabApiConfig,
 
-        #[arg(short = 'f')]
+        #[arg(short = 'f', long = "format")]
         format: OutputFormat,
 
-        #[arg(short = 'p')]
+        #[arg(short = 'p', long = "project")]
         project: String,
     },
 
@@ -139,7 +140,7 @@ pub enum ProjectCommand {
         #[command(flatten)]
         api: GitLabApiConfig,
 
-        #[arg(short = 'p')]
+        #[arg(short = 'p', long = "project")]
         project: String,
     },
 }
@@ -150,7 +151,7 @@ pub enum MergeRequestCommand {
         #[command(flatten)]
         api: GitLabApiConfig,
 
-        #[arg(short = 'f')]
+        #[arg(short = 'f', long = "format")]
         format: OutputFormat,
 
         #[command(flatten)]
@@ -160,9 +161,11 @@ pub enum MergeRequestCommand {
 
 #[derive(Debug, Clone, Args)]
 pub struct GitLabApiConfig {
+    /// The domain name of the gitlab instance.
     #[arg(long = "api-url", env = "GITLAB_API_URL", value_parser = parse_url)]
     pub url: String,
 
+    /// The personal access token which is used to authenticate with gitlab.
     #[arg(long = "api-token", env = "GITLAB_TOKEN")]
     pub token: SecretString,
 }
@@ -186,7 +189,8 @@ fn parse_url(url: &str) -> anyhow::Result<String> {
 
 #[derive(Debug, Clone, Args)]
 pub struct GitLabMrReference {
-    #[arg(long = "mr-ref", env = "GITLAB_MR_REF", value_parser = parse_mr_reference)]
+    /// The merge request reference (e.g. `opentalk/backend/services/roomserver!680`).
+    #[arg(short= 'm', long = "merge-request", env = "GITLAB_MR_REF", value_parser = parse_mr_reference)]
     mr_reference: (String, u64),
 }
 
