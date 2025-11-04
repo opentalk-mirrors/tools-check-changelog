@@ -43,8 +43,8 @@ git-cliff config: $GIT_CLIFF_CONFIG
 # Don't include any header in the output
 export GIT_CLIFF__CHANGELOG__HEADER=""
 
-REPO_REMOTE=$( ot-gitlab-cli project authorized-clone-url --project "$TARGET_REPO" )
-REPO_MR_REMOTE=$( ot-gitlab-cli project authorized-clone-url --project "$SOURCE_REPO" )
+REPO_REMOTE=$( ot-gitlab-cli project authorized-clone-url -p "$TARGET_REPO" )
+REPO_MR_REMOTE=$( ot-gitlab-cli project authorized-clone-url -p "$SOURCE_REPO" )
 
 # Temporary file for the changelog output
 temp_file=$( mktemp )
@@ -71,7 +71,7 @@ git-cliff -vv \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
 GITLAB_CLI_OPTIONS=()
-SHOULD_RESOLVE=$(ot-gitlab-cli merge-request get-labels --format json | jq '. | any(contains("Maintenance"))')
+SHOULD_RESOLVE=$(ot-gitlab-cli merge-request get-labels -f json | jq '. | any(contains("Maintenance"))')
 if [ "$SHOULD_RESOLVE" == "true" ]; then
     echo "Mark discussion as resolved. This is a maintenance MR."
     GITLAB_CLI_OPTIONS+=(--resolve)
