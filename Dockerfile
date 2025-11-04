@@ -1,5 +1,5 @@
 FROM git.opentalk.dev:5050/opentalk/tools/git-cliff:v2.7.0-ot.1 AS git-cliff
-FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.91.0-bookworm AS builder
+FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.91.0-trixie AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY ot-gitlab-cli/ ot-gitlab-cli/
 
 RUN RUSTFLAGS=-Ctarget-feature=-crt-static cargo auditable build --release
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 RUN git config --global --add safe.directory /repository
