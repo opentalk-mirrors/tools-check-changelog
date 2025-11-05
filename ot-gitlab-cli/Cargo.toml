@@ -11,7 +11,7 @@ clap = { version = "4.5.19", features = ["derive", "env"] }
 clap-verbosity-flag = "3.0.0"
 derive_builder = "0.20.2"
 env_logger = "0.11.5"
-gitlab = "0.1804.0"
+gitlab = "0.1805.0"
 log = "0.4.22"
 secrecy = "0.10.2"
 serde = { version = "1.0.210", features = ["derive"] }
