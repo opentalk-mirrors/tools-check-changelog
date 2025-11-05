@@ -1,7 +1,9 @@
 use anyhow::Context;
 use chrono::{DateTime, Utc};
+use derive_builder::Builder;
 use gitlab::{
     api::{
+        common::NameOrId,
         paged,
         projects::merge_requests::{discussions, notes},
         Client, Pagination, Query,
@@ -136,6 +138,57 @@ pub fn modify_discussion<C: Client<Error = RestError>>(
         .build()?;
 
     let response: serde_json::Value = call.query(client)?;
+    log::trace!("response: {response:#?}");
+
+    Ok(())
+}
+
+pub fn resolve_discussion<C: Client<Error = RestError>>(
+    client: &C,
+    project: &str,
+    merge_request: u64,
+    discussion_id: &str,
+) -> anyhow::Result<()> {
+    use gitlab::api::{endpoint_prelude::*, Query as _};
+
+    // Create a custom endpoint for resolving discussions
+    #[derive(Debug, Clone, Builder)]
+    struct ResolveDiscussion<'a> {
+        #[builder(setter(into))]
+        project: NameOrId<'a>,
+        merge_request: u64,
+        discussion_id: &'a str,
+    }
+
+    impl<'a> Endpoint for ResolveDiscussion<'a> {
+        fn method(&self) -> Method {
+            Method::PUT
+        }
+
+        fn endpoint(&self) -> Cow<'static, str> {
+            format!(
+                "projects/{}/merge_requests/{}/discussions/{}",
+                self.project, self.merge_request, self.discussion_id
+            )
+            .into()
+        }
+
+        fn body(&self) -> Result<Option<(&'static str, Vec<u8>)>, BodyError> {
+            let mut params = FormParams::default();
+            params.push("resolved", "true");
+            params.into_body()
+        }
+    }
+
+    let endpoint = ResolveDiscussionBuilder::default()
+        .project(project)
+        .discussion_id(discussion_id)
+        .merge_request(merge_request)
+        .build()?;
+
+    log::trace!("request: {endpoint:#?}");
+
+    let response: serde_json::Value = endpoint.query(client)?;
     log::trace!("response: {response:#?}");
 
     Ok(())

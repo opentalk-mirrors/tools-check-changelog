@@ -11,7 +11,7 @@ RUN RUSTFLAGS=-Ctarget-feature=-crt-static cargo auditable build --release
 
 FROM debian:trixie-slim
 
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git jq && rm -rf /var/lib/apt/lists/*
 RUN git config --global --add safe.directory /repository
 
 WORKDIR /repository

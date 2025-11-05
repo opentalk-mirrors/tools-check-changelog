@@ -73,8 +73,9 @@ lint:commit:
 lint:yaml:
   stage: lint
   <<: *default_job_condition
+  image: alpine:3.22
   before_script:
-    - apt-get update && apt-get install -y yamllint
+    - apk add yamllint
   script: yamllint .
 
 lint:toml:
@@ -110,6 +111,8 @@ lint:changelog:
     SOURCE_REPO: $CI_MERGE_REQUEST_SOURCE_PROJECT_PATH
     SOURCE_BRANCH: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
     GITLAB_MR: $CI_MERGE_REQUEST_IID
+  before_script:
+    - apt-get update && apt-get install -y jq
   script:
     - ./comment-changelog-additions.sh
 
