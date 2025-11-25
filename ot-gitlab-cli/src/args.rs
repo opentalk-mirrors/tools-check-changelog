@@ -27,6 +27,9 @@ pub enum GitlabCommand {
 
     #[command(subcommand)]
     MergeRequest(MergeRequestCommand),
+
+    #[command(subcommand)]
+    Todo(TodoCommand),
 }
 
 #[derive(Debug, Clone, Subcommand)]
@@ -156,6 +159,18 @@ pub enum MergeRequestCommand {
 
         #[command(flatten)]
         mr: GitLabMrReference,
+    },
+}
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum TodoCommand {
+    /// Mark all todos as done where the associated merge request or issue is closed
+    MarkClosedDone {
+        #[command(flatten)]
+        api: GitLabApiConfig,
+
+        #[arg(short = 'f', long = "format")]
+        format: OutputFormat,
     },
 }
 
