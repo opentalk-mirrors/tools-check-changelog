@@ -3,6 +3,7 @@ use crate::args::{AppArgs, GitlabCommand};
 mod discussion;
 mod merge_request;
 mod project;
+mod todo;
 mod user;
 
 pub fn run(args: AppArgs) -> anyhow::Result<()> {
@@ -13,5 +14,6 @@ pub fn run(args: AppArgs) -> anyhow::Result<()> {
         GitlabCommand::MergeRequest(merge_request_command) => {
             merge_request::run(merge_request_command)
         }
+        GitlabCommand::Todo(todo_command) => todo::run(todo_command),
     }
 }

@@ -60,12 +60,12 @@ pub fn fetch_discussions(
         .project(project)
         .merge_request(merge_request)
         .build()?;
-    let call = paged(call, Pagination::Limit(100));
+    let call = paged(call, Pagination::AllPerPageLimit(10));
 
     let mut discussions = Vec::new();
     for page in call.into_iter(client) {
         let response: serde_json::Value = page.context("Failed to query discussion")?;
-        log::trace!("response: {discussions:#?}");
+        log::trace!("response: {response:?}");
 
         discussions.extend(serde_json::from_value(response));
     }
