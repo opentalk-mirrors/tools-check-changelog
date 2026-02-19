@@ -58,7 +58,7 @@ The following types are also allowed but used less ofter.
         - `fix(deps)` (see Dependency section)
         - `fix(ux)` (see UX section)
 - ⚡ Performance
-    - type: `pref`
+    - type: `perf`
 - 📚 Documentation
     - type: `docs`
 - 🔨 Refactor
