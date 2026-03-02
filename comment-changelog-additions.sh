@@ -75,7 +75,7 @@ if [ "$SHOULD_RESOLVE" == "true" ]; then
 fi
 
 # We prepend every line with `> ` using awk
-echo -e "This MR will add the following changelog entries:
+COMMENT="This MR will add the following changelog entries:
 
 $(awk '{print "> "$0}' < "$temp_file")
 
@@ -84,7 +84,14 @@ If you are happy with the changelog entry, resolve this thread.
 * [How to write commit messages?](https://git.opentalk.dev/opentalk/tools/check-changelog/-/blob/main/doc/commit-message-format.md)
 * Visit the [changelog bot repository](https://git.opentalk.dev/opentalk/tools/check-changelog)
 * [Report an issue or request a feature](https://git.opentalk.dev/opentalk/tools/check-changelog/-/issues/new)
-" | ot-gitlab-cli discussion put-latest -vv --input - "${GITLAB_CLI_OPTIONS[@]}"
+"
+
+if [ -n "$DRY_RUN" ]; then
+    echo "[DRY RUN] Would post the following comment:"
+    echo -e "$COMMENT"
+else
+    echo -e "$COMMENT" | ot-gitlab-cli discussion put-latest -vv --input - "${GITLAB_CLI_OPTIONS[@]}"
+fi
 
 popd
 
