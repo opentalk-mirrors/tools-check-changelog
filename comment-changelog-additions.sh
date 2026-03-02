@@ -6,7 +6,7 @@
 
 set -e
 
-for cmd in git-cliff ot-gitlab-cli git awk; do
+for cmd in opentalk-git-cliff ot-gitlab-cli git awk; do
     if ! command -v $cmd &> /dev/null; then
         echo "Error: $cmd is not installed or not found in PATH" >&2
         exit 1
@@ -24,8 +24,6 @@ for var in "${env_vars[@]}"; do
     fi
 done
 
-export GIT_CLIFF_CONFIG=${GIT_CLIFF_CONFIG:-"opentalk"}
-GIT_CLIFF=${GIT_CLIFF:-"git-cliff"}
 export GITLAB_MR_REF="$TARGET_REPO!$GITLAB_MR"
 export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
 TARGET_BRANCH="main"
@@ -37,7 +35,7 @@ Target Branch: $TARGET_BRANCH
 Source Repository: $SOURCE_REPO
 Source Branch: $SOURCE_BRANCH
 
-git-cliff config: $GIT_CLIFF_CONFIG
+git-cliff config: ${GIT_CLIFF_CONFIG:-"<Default Config>"}
 "
 
 # Don't include any header in the output
@@ -64,8 +62,7 @@ git fetch mr-remote "$SOURCE_BRANCH"
 TARGET_BRANCH=$( git rev-parse --abbrev-ref "$TARGET_BRANCH@{u}" )
 
 export GITLAB_REPO="$TARGET_REPO"
-git-cliff -vv \
-    --config "$GIT_CLIFF_CONFIG" \
+RUST_LOG=git_cliff=debug,opentalk=debug opentalk-git-cliff \
     -o "$temp_file" \
     --tag hidden \
     "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
