@@ -2,13 +2,13 @@ use anyhow::Context;
 use chrono::{DateTime, Utc};
 use derive_builder::Builder;
 use gitlab::{
+    Gitlab, RestError,
     api::{
+        Client, Pagination, Query,
         common::NameOrId,
         paged,
         projects::merge_requests::{discussions, notes},
-        Client, Pagination, Query,
     },
-    Gitlab, RestError,
 };
 use serde::{Deserialize, Serialize};
 
@@ -149,7 +149,7 @@ pub fn resolve_discussion<C: Client<Error = RestError>>(
     merge_request: u64,
     discussion_id: &str,
 ) -> anyhow::Result<()> {
-    use gitlab::api::{endpoint_prelude::*, Query as _};
+    use gitlab::api::{Query as _, endpoint_prelude::*};
 
     // Create a custom endpoint for resolving discussions
     #[derive(Debug, Clone, Builder)]
