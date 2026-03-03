@@ -1,6 +1,6 @@
 use gitlab::{
-    api::{projects::merge_requests, Client, Query as _},
     RestError,
+    api::{Client, Query as _, projects::merge_requests},
 };
 
 use crate::args::GitLabMrReference;

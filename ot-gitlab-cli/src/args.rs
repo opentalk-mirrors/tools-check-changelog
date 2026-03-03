@@ -1,6 +1,6 @@
 use std::{fmt::Display, path::PathBuf, str::FromStr};
 
-use anyhow::{ensure, Context};
+use anyhow::{Context, ensure};
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use secrecy::SecretString;
 use url::Url;

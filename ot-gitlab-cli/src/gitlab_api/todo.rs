@@ -1,8 +1,8 @@
 use anyhow::Context;
 use derive_builder::Builder;
 use gitlab::{
-    api::{endpoint_prelude::*, paged, Client, Pagination, Query as _},
     RestError,
+    api::{Client, Pagination, Query as _, endpoint_prelude::*, paged},
 };
 use serde::{Deserialize, Serialize};
 

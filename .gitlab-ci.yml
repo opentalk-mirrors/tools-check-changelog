@@ -103,7 +103,7 @@ lint:changelog:
   stage: lint
   <<: *default_job_condition
   image:
-    name: git.opentalk.dev:5050/opentalk/tools/check-changelog:dev
+    name: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.93.0-trixie
     entrypoint: ['']
   variables:
     GITLAB_TOKEN: $CHANGELOG_BOT_TOKEN
@@ -114,6 +114,8 @@ lint:changelog:
   before_script:
     - apt-get update && apt-get install -y jq
   script:
+    - cargo install --path ot-gitlab-cli
+    - cargo install --path opentalk-git-cliff
     - ./comment-changelog-additions.sh
 
 pipeline:changelog:

@@ -1,3 +1,10 @@
 [workspace]
-members = ["ot-gitlab-cli"]
+members = ["git-cliff-gitlab", "opentalk-git-cliff", "ot-gitlab-cli"]
+package.license = "EUPL-1.2"
+package.version = "0.1.0"
 resolver = "2"
+
+[workspace.dependencies]
+git-cliff = "2.12"
+git-cliff-core = "2.12"
+git-cliff-gitlab = { path = "./git-cliff-gitlab" }

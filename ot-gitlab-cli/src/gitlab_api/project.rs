@@ -1,6 +1,6 @@
 use gitlab::{
-    api::{self, Client, Query as _},
     RestError,
+    api::{self, Client, Query as _},
 };
 use serde::{Deserialize, Serialize};
 
