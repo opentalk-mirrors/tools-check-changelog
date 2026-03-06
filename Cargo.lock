@@ -1178,9 +1178,9 @@ dependencies = [
 
 [[package]]
 name = "gitlab"
-version = "0.1808.0"
+version = "0.1809.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb26343c8ff3f5a49270f51120912638c416869404a350811d428636e93b62ef"
+checksum = "ae21f373578dab2701a911f6ca149e912d7dad1ccd48935098ae0996523c4c9a"
 dependencies = [
  "async-trait",
  "backtrace",
@@ -1195,7 +1195,7 @@ dependencies = [
  "itertools",
  "log",
  "percent-encoding",
- "reqwest 0.12.28",
+ "reqwest 0.13.2",
  "serde",
  "serde_json",
  "serde_urlencoded",
