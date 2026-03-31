@@ -14,7 +14,7 @@ for cmd in opentalk-git-cliff ot-gitlab-cli git awk jq; do
 done
 
 # Expected variables
-env_vars=("TARGET_REPO" "SOURCE_REPO" "GITLAB_MR" "SOURCE_BRANCH" "GITLAB_TOKEN")
+env_vars=("TARGET_REPO" "SOURCE_REPO" "GITLAB_MR" "TARGET_BRANCH" "SOURCE_BRANCH" "GITLAB_TOKEN")
 
 # Loop through the list and check each variable
 for var in "${env_vars[@]}"; do
@@ -26,7 +26,6 @@ done
 
 export GITLAB_MR_REF="$TARGET_REPO!$GITLAB_MR"
 export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
-TARGET_BRANCH="main"
 
 echo " Creating changelog notification for
 Merge Request: $GITLAB_MR_REF
@@ -57,15 +56,13 @@ pushd "$temp_dir"
 git clone --no-checkout "$REPO_REMOTE" .
 git remote add mr-remote "$REPO_MR_REMOTE"
 git fetch mr-remote "$SOURCE_BRANCH"
-
-# We assume that the target branch is always main.
-TARGET_BRANCH=$( git rev-parse --abbrev-ref "$TARGET_BRANCH@{u}" )
+git fetch origin "$TARGET_BRANCH"
 
 export GITLAB_REPO="$TARGET_REPO"
 RUST_LOG=git_cliff=debug,opentalk=debug opentalk-git-cliff \
     -o "$temp_file" \
     --tag hidden \
-    "$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
+    "origin/$TARGET_BRANCH..mr-remote/$SOURCE_BRANCH"
 
 GITLAB_CLI_OPTIONS=()
 SHOULD_RESOLVE=$(ot-gitlab-cli merge-request get-labels -f json | jq '. | any(contains("Maintenance"))')
