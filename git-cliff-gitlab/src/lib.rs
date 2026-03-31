@@ -9,10 +9,32 @@ use url::Url;
 
 static APP_USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"),);
 
+/// Select the most relevant merge request from a list of candidates.
+///
+/// Prefers merge requests that target the `default_branch`, then picks the one
+/// with the highest IID (i.e. the most recently created).
+fn select_most_relevant_mr<'a>(
+    merge_requests: &'a [MergeRequest],
+    default_branch: &str,
+) -> Option<&'a MergeRequest> {
+    merge_requests
+        .iter()
+        .filter(|mr| !mr.state.is_closed() && !mr.state.is_locked())
+        .max_by(|a, b| {
+            let a_targets_default = a.target_branch == default_branch;
+            let b_targets_default = b.target_branch == default_branch;
+
+            a_targets_default
+                .cmp(&b_targets_default)
+                .then_with(|| a.iid.cmp(&b.iid))
+        })
+}
+
 fn add_mr_to_commit(
     client: Client,
     gitlab_url: &Url,
     gitlab_repo: &str,
+    default_branch: &str,
     commit: &mut Commit<'_>,
 ) -> Result<()> {
     let url = format!(
@@ -34,7 +56,7 @@ fn add_mr_to_commit(
                 .unwrap_or("<failed to receive GitLab response>")
         )
     }
-    let mut merge_requests: Vec<MergeRequest> = res
+    let merge_requests: Vec<MergeRequest> = res
         .json()
         .with_context(|| format!("Failed to process GitLab response for commit {}", commit.id))?;
     log::debug!(
@@ -43,13 +65,7 @@ fn add_mr_to_commit(
         commit.id
     );
 
-    // Filter all closed, locked MRs and sort by IID so that we can take the MR with
-    // the highest number
-    merge_requests.retain(|mr| !mr.state.is_closed() && !mr.state.is_locked());
-    merge_requests.sort_by(|a, b| a.iid.cmp(&b.iid));
-
-    // We take the newest/latest merge request
-    let Some(relevant_mr) = merge_requests.last() else {
+    let Some(relevant_mr) = select_most_relevant_mr(&merge_requests, default_branch) else {
         log::warn!("No merge request found for commit {}", commit.id);
         return Ok(());
     };
@@ -66,6 +82,7 @@ pub fn add_merge_request_information(
     gitlab_token: &str,
     gitlab_url: &Url,
     gitlab_repo: &str,
+    default_branch: &str,
     changelog: &mut Changelog<'_>,
 ) -> Result<()> {
     let commit_iter = changelog
@@ -102,7 +119,13 @@ pub fn add_merge_request_information(
     }
 
     commit_iter.try_for_each(|commit| {
-        add_mr_to_commit(client.clone(), gitlab_url, &url_encoded_repo, commit)
+        add_mr_to_commit(
+            client.clone(),
+            gitlab_url,
+            &url_encoded_repo,
+            default_branch,
+            commit,
+        )
     })?;
 
     Ok(())

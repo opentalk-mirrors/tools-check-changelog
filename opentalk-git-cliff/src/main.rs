@@ -11,6 +11,12 @@ use git_cliff::args::Opt;
 use git_cliff_core::error::Result;
 use secrecy::ExposeSecret;
 
+/// Name of the environment varible which sets the default branch of a repository.
+const ENV_DEFAULT_BRANCH: &str = "DEFAULT_BRANCH";
+
+/// The fallback branch which is used when the [`DEFAULT_BRANCH`] is not set.
+const DEFAULT_BRANCH: &str = "main";
+
 static OPENTALK_CONFIG: &str = include_str!("../../git-cliff-config/opentalk.toml");
 
 fn main() -> Result<()> {
@@ -45,10 +51,14 @@ fn main() -> Result<()> {
             (&args.gitlab_token, env::var("GITLAB_API_URL"))
         {
             let remote = &changelog.config.remote.gitlab;
+            let default_branch =
+                env::var(ENV_DEFAULT_BRANCH).unwrap_or_else(|_| DEFAULT_BRANCH.to_string());
+
             git_cliff_gitlab::add_merge_request_information(
                 gitlab_token.expose_secret(),
                 &gitlab_url.parse()?,
                 &format!("{}/{}", remote.owner, remote.repo),
+                &default_branch,
                 changelog,
             )
             .map_err(|e| {

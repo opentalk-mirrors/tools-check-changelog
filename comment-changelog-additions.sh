@@ -26,6 +26,7 @@ done
 
 export GITLAB_MR_REF="$TARGET_REPO!$GITLAB_MR"
 export GITLAB_API_URL=${GITLAB_API_URL:-$CI_API_V4_URL}
+export DEFAULT_BRANCH=${DEFAULT_BRANCH:-"main"}
 
 echo " Creating changelog notification for
 Merge Request: $GITLAB_MR_REF
