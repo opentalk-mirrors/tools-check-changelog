@@ -8,6 +8,7 @@ pub struct MergeRequest {
     pub project_id: i64,
     pub title: String,
     pub state: MergeRequestState,
+    pub target_branch: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
