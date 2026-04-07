@@ -70,7 +70,6 @@ feature-depth = 1
 # A list of advisory IDs to ignore. Note that ignored advisories will still
 # output a note when they are encountered.
 ignore = [
-  "RUSTSEC-2024-0370", # proc-macro-error is unmaintained
   "RUSTSEC-2025-0141", # bincode is unmaintained
 ]
 # If this is true, then cargo deny will use the git executable to fetch advisory database.
@@ -96,7 +95,6 @@ allow = [
   "ISC",
   "MIT",
   "MPL-2.0",
-  "OpenSSL",
   "Unicode-3.0",
   "Zlib",
 ]
@@ -219,16 +217,18 @@ skip = [
   "getrandom@0.4",
   "hashbrown@0.15.5",
   "heck@0.4",
+  "r-efi@5",
   "reqwest@0.12",
   "secrecy@0.8.0",
   "syn@1",
   "thiserror-impl@1.0.69",
   "thiserror@1.0.69",
+  "toml@0.9",
+  "toml_datetime@0.7",
   "unicode-width@0.1.14",
   "windows-sys@0.45",
   "windows-sys@0.52",
   "windows-sys@0.59.0",
-  "windows-sys@0.60.2",
   "windows-targets@0.42",
   "windows-targets@0.52.6",
   "windows_aarch64_gnullvm@0.42",
@@ -237,7 +237,6 @@ skip = [
   "windows_aarch64_msvc@0.52.6",
   "windows_i686_gnu@0.42",
   "windows_i686_gnu@0.52.6",
-  "windows_i686_gnullvm@0.52.6",
   "windows_i686_msvc@0.42",
   "windows_i686_msvc@0.52.6",
   "windows_x86_64_gnu@0.42",
@@ -247,6 +246,7 @@ skip = [
   "windows_x86_64_msvc@0.42",
   "windows_x86_64_msvc@0.52.6",
   "winnow@0.6.26",
+  "winnow@0.7.15",
 ]
 # Similarly to `skip` allows you to skip certain crates during duplicate
 # detection. Unlike skip, it also includes the entire tree of transitive
