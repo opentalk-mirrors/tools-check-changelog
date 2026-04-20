@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT OR Apache-2.0
 
 ---
-image: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.94.1-trixie
+image: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.95.0-trixie
 
 .default_job_condition: &default_job_condition
   needs: []
@@ -103,7 +103,7 @@ lint:changelog:
   stage: lint
   <<: *default_job_condition
   image:
-    name: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.94.1-trixie
+    name: git.opentalk.dev:5050/opentalk/backend/containers/rust:1.95.0-trixie
     entrypoint: ['']
   variables:
     GITLAB_TOKEN: $CHANGELOG_BOT_TOKEN
