@@ -1,4 +1,4 @@
-FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.96.0-trixie AS builder
+FROM git.opentalk.dev:5050/opentalk/backend/containers/rust:1.97.0-trixie AS builder
 
 WORKDIR /app
 
