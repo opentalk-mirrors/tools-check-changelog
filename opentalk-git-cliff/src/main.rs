@@ -8,7 +8,7 @@ use std::{
 
 use clap::Parser;
 use git_cliff::args::Opt;
-use git_cliff_core::{DEFAULT_CONFIG, error::Result};
+use git_cliff_core::{DEFAULT_CONFIG, embed::BuiltinConfig, error::Result};
 use secrecy::ExposeSecret;
 
 /// Name of the environment varible which sets the default branch of a repository.
@@ -31,16 +31,24 @@ fn main() -> Result<()> {
     }
     git_cliff::logger::init()?;
 
+    // Print the available templates if requested
+    if args.list_templates {
+        for name in BuiltinConfig::list_templates(args.templates_dir.as_deref())? {
+            println!("{name}");
+        }
+        return Ok(());
+    }
+
     // check if custom config was set, use default opentalk config otherwise.
-    if args.config == Path::new(DEFAULT_CONFIG) && args.config_url.is_none() {
+    if args.config.is_none() && args.config_url.is_none() {
         log::debug!("No config was specified, using default opentalk config.");
-        let local_config = ensure_local_opentalk_config()?;
-        args.config = local_config;
+        args.config = Some(ensure_local_opentalk_config()?);
     }
 
     // Create the configuration file if init flag is given.
     if let Some(path) = &args.init {
-        git_cliff::init_config(path.as_deref(), &args.config)?;
+        let config = args.config.as_deref().unwrap_or(Path::new(DEFAULT_CONFIG));
+        git_cliff::init_config(path.as_deref(), config)?;
         return Ok(());
     }
 
