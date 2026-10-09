@@ -8,7 +8,7 @@ use std::{
 
 use clap::Parser;
 use git_cliff::args::Opt;
-use git_cliff_core::error::Result;
+use git_cliff_core::{DEFAULT_CONFIG, error::Result};
 use secrecy::ExposeSecret;
 
 /// Name of the environment varible which sets the default branch of a repository.
@@ -32,8 +32,7 @@ fn main() -> Result<()> {
     git_cliff::logger::init()?;
 
     // check if custom config was set, use default opentalk config otherwise.
-    let config_arg = ConfigOpt::parse();
-    if config_arg.no_custom_config() {
+    if args.config == Path::new(DEFAULT_CONFIG) && args.config_url.is_none() {
         log::debug!("No config was specified, using default opentalk config.");
         let local_config = ensure_local_opentalk_config()?;
         args.config = local_config;
@@ -92,27 +91,6 @@ fn main() -> Result<()> {
     };
 
     process::exit(exit_code);
-}
-
-#[derive(Debug, Parser, Clone)]
-// We only parse a subset of the available arguments. We do not want to error when receiving unknown
-// arguments.
-#[command(ignore_errors(true))]
-struct ConfigOpt {
-    /// Sets the configuration file.
-    #[arg(short, long, env = "GIT_CLIFF_CONFIG")]
-    pub config: Option<String>,
-
-    /// Sets the URL for the configuration file.
-    #[arg(long, env = "GIT_CLIFF_CONFIG_URL")]
-    pub config_url: Option<String>,
-}
-
-impl ConfigOpt {
-    /// Returns true if no custom config was provided, false otherwise.
-    fn no_custom_config(&self) -> bool {
-        self.config.is_none() && self.config_url.is_none()
-    }
 }
 
 /// Ensures that the opentalk config is stored locally
