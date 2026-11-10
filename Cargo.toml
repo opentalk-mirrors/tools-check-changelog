@@ -5,6 +5,6 @@ package.version = "0.1.0"
 resolver = "2"
 
 [workspace.dependencies]
-git-cliff = "2.12"
-git-cliff-core = "2.12"
+git-cliff = "2.14"
+git-cliff-core = "2.14"
 git-cliff-gitlab = { path = "./git-cliff-gitlab" }
